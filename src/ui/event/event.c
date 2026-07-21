@@ -1,5 +1,6 @@
 #include "lvgl/lvgl.h"
 #include "event.h"
+#include <time.h>
 
 void slider_event_cb(lv_event_t *e)
 {
@@ -23,12 +24,12 @@ void btn_event_cb(lv_event_t *e)
     {
     case 0:
         if (code == LV_EVENT_PRESSING) {
-            
+
         } else if(code == LV_EVENT_RELEASED) {
-            
+
         }
         break;
-    
+
     default:
         break;
     }
@@ -39,13 +40,24 @@ lv_obj_t *setting_screen_create(void)
 {
     lv_obj_t *setting = lv_obj_create(NULL);
     lv_obj_set_size(setting, LV_HOR_RES, LV_VER_RES);
-    lv_obj_set_style_bg_color(setting, 
+    lv_obj_set_style_bg_color(setting,
         lv_color_hex(0x0066cc), LV_PART_MAIN);
-    
+
     lv_obj_t *label = lv_label_create(setting);
     lv_obj_set_align(label, LV_ALIGN_TOP_MID);
     lv_label_set_text(label, "setting");
 
     return setting;
 }
-    
+
+void time_cb(lv_timer_t *t)
+{
+    lv_obj_t *label = lv_timer_get_user_data(t);
+
+    time_t current_time = time(NULL);
+    struct tm *local_time = localtime(&current_time);
+    char time_buf[24];
+    strftime(time_buf, sizeof(time_buf), "%H:%M", local_time);
+    lv_label_set_text(label, time_buf);
+
+}

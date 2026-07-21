@@ -42,18 +42,15 @@ void screen_main_create(void)
 
     }
 
-    // time_t current_time = time(NULL);
-    // struct tm *local_time = localtime(current_time);
-    // char time_buf[24];
-    // strftime(time_buf, sizeof(time_buf), "%H:%M", local_time);
     lv_obj_t *time_label = lv_label_create(time_panel);
     // lv_obj_set_size(time_label, lv_pct(100), lv_pct(100));
     lv_obj_center(time_label);
-    lv_obj_set_style_bg_color(time_label, lv_color_hex(0x00ff00), 0);
     lv_obj_set_style_bg_opa(time_label, LV_OPA_COVER, 0);
-    lv_obj_set_style_text_font(time_label, &lv_font_montserrat_24, 0);
-    lv_label_set_text(time_label, "Ciallo");
+    lv_obj_set_style_bg_color(time_label, lv_color_hex(0x134f234), 0);
+    lv_obj_set_style_text_font(time_label, &lv_font_montserrat_48, 0);
+    // lv_obj_set_style_text_align(time_label, LV_TEXT_ALIGN_CENTER, 0);
 
+    lv_timer_create(time_cb, 1000, time_label);
 
 
 }

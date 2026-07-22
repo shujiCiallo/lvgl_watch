@@ -1,8 +1,8 @@
-CMakeFiles/main.dir/src/ui/screen/srceen_mian.c.o: \
- /home/shuji/lvgl/watch/src/ui/screen/srceen_mian.c \
+CMakeFiles/main.dir/src/ui/screen/screen_main.c.o: \
+ /home/shuji/lvgl/watch/src/ui/screen/screen_main.c \
  /usr/include/stdc-predef.h \
  /home/shuji/lvgl/watch/src/ui/screen/screen_main.h \
- /home/shuji/lvgl/lvgl/include/lvgl/lvgl.h \
+ /home/shuji/lvgl/lvgl/lvgl.h /home/shuji/lvgl/lvgl/include/lvgl/lvgl.h \
  /home/shuji/lvgl/lvgl/include/lvgl/lv_version.h \
  /home/shuji/lvgl/lvgl/include/lvgl/3d/lv_3dmath.h \
  /home/shuji/lvgl/lvgl/include/lvgl/config/lv_conf_internal.h \
@@ -428,6 +428,7 @@ CMakeFiles/main.dir/src/ui/screen/srceen_mian.c.o: \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_3.h \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_4.h \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_5.h \
+ /home/shuji/lvgl/lvgl/include/lvgl/lvgl.h \
  /home/shuji/lvgl/watch/src/ui/event/event.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \

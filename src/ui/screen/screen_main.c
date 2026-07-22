@@ -4,16 +4,30 @@
 #include "style/app_styles.h"
 #include <time.h>
 
-void screen_main_create(void)
+static lv_obj_t *s_home_panel = NULL;
+
+
+static void time_panel_create(lv_obj_t *parent);
+static void music_panel_create(lv_obj_t *parent);
+static void info_panel_create(lv_obj_t *parent);
+
+void screen_main_create(lv_obj_t *parent)
 {
-    lv_obj_t *base_scr = lv_scr_act();
-    lv_obj_add_style(base_scr, &style_screen_bg, 0);
+    s_home_panel = parent;
+    lv_obj_add_style(s_home_panel, &style_screen_bg, 0);
 
-    lv_obj_t *home_panel = lv_obj_create(base_scr);
-    lv_obj_set_flex_flow(home_panel, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_size(home_panel, lv_pct(100), lv_pct(100));
+    lv_obj_set_flex_flow(s_home_panel, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_size(s_home_panel, lv_pct(100), lv_pct(100));
 
-    lv_obj_t *time_panel = lv_obj_create(home_panel);
+    time_panel_create(s_home_panel);
+    music_panel_create(s_home_panel);
+    info_panel_create(s_home_panel);
+
+}
+
+static void time_panel_create(lv_obj_t *parent)
+{
+    lv_obj_t *time_panel = lv_obj_create(parent);
     lv_obj_set_align(time_panel, LV_ALIGN_TOP_MID);
     lv_obj_set_size(time_panel, lv_pct(100), lv_pct(40));
     {
@@ -29,12 +43,20 @@ void screen_main_create(void)
         lv_timer_create(time_cb, 1000, time_label);
     }
 
-    lv_obj_t *volume_panel = lv_obj_create(home_panel);
-    lv_obj_set_size(volume_panel, lv_pct(100), lv_pct(15));
-    lv_obj_t *volume_slider = lv_slider_create(volume_panel);
-    lv_obj_center(volume_slider);
 
-    lv_obj_t *info_panel = lv_obj_create(home_panel);
+}
+
+static void music_panel_create(lv_obj_t *parent)
+{
+    lv_obj_t *music_panel = lv_obj_create(parent);
+    lv_obj_set_size(music_panel, lv_pct(100), lv_pct(25));
+
+    //muisc_symbol-----
+}
+
+static void info_panel_create(lv_obj_t *parent)
+{
+    lv_obj_t *info_panel = lv_obj_create(parent);
     lv_obj_set_size(info_panel, lv_pct(100), lv_pct(35));
     lv_obj_set_flex_flow(info_panel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(info_panel,
@@ -42,12 +64,6 @@ void screen_main_create(void)
                       LV_FLEX_ALIGN_CENTER,
                       LV_FLEX_ALIGN_START);
     {
-        static lv_style_t info_style;
-        lv_style_init(&info_style);
-        lv_style_set_text_font(&info_style, &lv_font_montserrat_36);
-        // lv_style_set_bg_color(&info_style, lv_color_hex(0x1234f234));
-        // lv_style_set_bg_opa(&info_style, LV_OPA_COVER);
-
         lv_obj_t *temp = lv_obj_create(info_panel);
         lv_obj_set_flex_grow(temp, 1);
         lv_obj_set_height(temp, lv_pct(100));

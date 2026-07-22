@@ -453,6 +453,7 @@ CMakeFiles/main.dir/src/ui/ui.c.o: /home/shuji/lvgl/watch/src/ui/ui.c \
  /home/shuji/lvgl/watch/src/../../lvgl/include/lvgl/api_map/lv_api_map_v9_3.h \
  /home/shuji/lvgl/watch/src/../../lvgl/include/lvgl/api_map/lv_api_map_v9_4.h \
  /home/shuji/lvgl/watch/src/../../lvgl/include/lvgl/api_map/lv_api_map_v9_5.h \
- /home/shuji/lvgl/watch/src/ui/screen/screen_main.h \
+ /home/shuji/lvgl/watch/src/ui/screen/screen_manager.h \
+ /home/shuji/lvgl/lvgl/lvgl.h /home/shuji/lvgl/lvgl/include/lvgl/lvgl.h \
  /home/shuji/lvgl/watch/src/ui/style/app_styles.h \
  /home/shuji/lvgl/lvgl/include/lvgl/lvgl.h

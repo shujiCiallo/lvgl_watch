@@ -335,29 +335,77 @@ src/ui/event/event.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/event/event.c.s
 .PHONY : src/ui/event/event.c.s
 
-src/ui/screen/srceen_mian.o: src/ui/screen/srceen_mian.c.o
-.PHONY : src/ui/screen/srceen_mian.o
+src/ui/screen/screen_main.o: src/ui/screen/screen_main.c.o
+.PHONY : src/ui/screen/screen_main.o
 
 # target to build an object file
-src/ui/screen/srceen_mian.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/srceen_mian.c.o
-.PHONY : src/ui/screen/srceen_mian.c.o
+src/ui/screen/screen_main.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_main.c.o
+.PHONY : src/ui/screen/screen_main.c.o
 
-src/ui/screen/srceen_mian.i: src/ui/screen/srceen_mian.c.i
-.PHONY : src/ui/screen/srceen_mian.i
+src/ui/screen/screen_main.i: src/ui/screen/screen_main.c.i
+.PHONY : src/ui/screen/screen_main.i
 
 # target to preprocess a source file
-src/ui/screen/srceen_mian.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/srceen_mian.c.i
-.PHONY : src/ui/screen/srceen_mian.c.i
+src/ui/screen/screen_main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_main.c.i
+.PHONY : src/ui/screen/screen_main.c.i
 
-src/ui/screen/srceen_mian.s: src/ui/screen/srceen_mian.c.s
-.PHONY : src/ui/screen/srceen_mian.s
+src/ui/screen/screen_main.s: src/ui/screen/screen_main.c.s
+.PHONY : src/ui/screen/screen_main.s
 
 # target to generate assembly for a file
-src/ui/screen/srceen_mian.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/srceen_mian.c.s
-.PHONY : src/ui/screen/srceen_mian.c.s
+src/ui/screen/screen_main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_main.c.s
+.PHONY : src/ui/screen/screen_main.c.s
+
+src/ui/screen/screen_manager.o: src/ui/screen/screen_manager.c.o
+.PHONY : src/ui/screen/screen_manager.o
+
+# target to build an object file
+src/ui/screen/screen_manager.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o
+.PHONY : src/ui/screen/screen_manager.c.o
+
+src/ui/screen/screen_manager.i: src/ui/screen/screen_manager.c.i
+.PHONY : src/ui/screen/screen_manager.i
+
+# target to preprocess a source file
+src/ui/screen/screen_manager.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_manager.c.i
+.PHONY : src/ui/screen/screen_manager.c.i
+
+src/ui/screen/screen_manager.s: src/ui/screen/screen_manager.c.s
+.PHONY : src/ui/screen/screen_manager.s
+
+# target to generate assembly for a file
+src/ui/screen/screen_manager.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_manager.c.s
+.PHONY : src/ui/screen/screen_manager.c.s
+
+src/ui/screen/screen_tools.o: src/ui/screen/screen_tools.c.o
+.PHONY : src/ui/screen/screen_tools.o
+
+# target to build an object file
+src/ui/screen/screen_tools.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o
+.PHONY : src/ui/screen/screen_tools.c.o
+
+src/ui/screen/screen_tools.i: src/ui/screen/screen_tools.c.i
+.PHONY : src/ui/screen/screen_tools.i
+
+# target to preprocess a source file
+src/ui/screen/screen_tools.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_tools.c.i
+.PHONY : src/ui/screen/screen_tools.c.i
+
+src/ui/screen/screen_tools.s: src/ui/screen/screen_tools.c.s
+.PHONY : src/ui/screen/screen_tools.s
+
+# target to generate assembly for a file
+src/ui/screen/screen_tools.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_tools.c.s
+.PHONY : src/ui/screen/screen_tools.c.s
 
 src/ui/style/app_styles.o: src/ui/style/app_styles.c.o
 .PHONY : src/ui/style/app_styles.o
@@ -437,9 +485,15 @@ help:
 	@echo "... src/ui/event/event.o"
 	@echo "... src/ui/event/event.i"
 	@echo "... src/ui/event/event.s"
-	@echo "... src/ui/screen/srceen_mian.o"
-	@echo "... src/ui/screen/srceen_mian.i"
-	@echo "... src/ui/screen/srceen_mian.s"
+	@echo "... src/ui/screen/screen_main.o"
+	@echo "... src/ui/screen/screen_main.i"
+	@echo "... src/ui/screen/screen_main.s"
+	@echo "... src/ui/screen/screen_manager.o"
+	@echo "... src/ui/screen/screen_manager.i"
+	@echo "... src/ui/screen/screen_manager.s"
+	@echo "... src/ui/screen/screen_tools.o"
+	@echo "... src/ui/screen/screen_tools.i"
+	@echo "... src/ui/screen/screen_tools.s"
 	@echo "... src/ui/style/app_styles.o"
 	@echo "... src/ui/style/app_styles.i"
 	@echo "... src/ui/style/app_styles.s"

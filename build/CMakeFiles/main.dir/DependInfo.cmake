@@ -12,7 +12,9 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/shuji/lvgl/watch/src/main.c" "CMakeFiles/main.dir/src/main.c.o" "gcc" "CMakeFiles/main.dir/src/main.c.o.d"
   "/home/shuji/lvgl/watch/src/mouse_cursor_icon.c" "CMakeFiles/main.dir/src/mouse_cursor_icon.c.o" "gcc" "CMakeFiles/main.dir/src/mouse_cursor_icon.c.o.d"
   "/home/shuji/lvgl/watch/src/ui/event/event.c" "CMakeFiles/main.dir/src/ui/event/event.c.o" "gcc" "CMakeFiles/main.dir/src/ui/event/event.c.o.d"
-  "/home/shuji/lvgl/watch/src/ui/screen/srceen_mian.c" "CMakeFiles/main.dir/src/ui/screen/srceen_mian.c.o" "gcc" "CMakeFiles/main.dir/src/ui/screen/srceen_mian.c.o.d"
+  "/home/shuji/lvgl/watch/src/ui/screen/screen_main.c" "CMakeFiles/main.dir/src/ui/screen/screen_main.c.o" "gcc" "CMakeFiles/main.dir/src/ui/screen/screen_main.c.o.d"
+  "/home/shuji/lvgl/watch/src/ui/screen/screen_manager.c" "CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o" "gcc" "CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o.d"
+  "/home/shuji/lvgl/watch/src/ui/screen/screen_tools.c" "CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o" "gcc" "CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o.d"
   "/home/shuji/lvgl/watch/src/ui/style/app_styles.c" "CMakeFiles/main.dir/src/ui/style/app_styles.c.o" "gcc" "CMakeFiles/main.dir/src/ui/style/app_styles.c.o.d"
   "/home/shuji/lvgl/watch/src/ui/ui.c" "CMakeFiles/main.dir/src/ui/ui.c.o" "gcc" "CMakeFiles/main.dir/src/ui/ui.c.o.d"
   )

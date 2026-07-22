@@ -428,8 +428,7 @@ CMakeFiles/main.dir/src/ui/screen/srceen_mian.c.o: \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_3.h \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_4.h \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_5.h \
- /home/shuji/lvgl/watch/src/ui/event/event.h \
- /home/shuji/lvgl/watch/src/ui/style/app_styles.h /usr/include/time.h \
+ /home/shuji/lvgl/watch/src/ui/event/event.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
@@ -441,4 +440,5 @@ CMakeFiles/main.dir/src/ui/screen/srceen_mian.c.o: \
  /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h
+ /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+ /home/shuji/lvgl/watch/src/ui/style/app_styles.h

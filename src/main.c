@@ -63,7 +63,7 @@ int main(int argc, char **argv)
   lv_init();
 
   /*Initialize the HAL (display, input devices, tick) for LVGL*/
-  sdl_hal_init(480, 400);
+  sdl_hal_init(280, 400);
 
   ui_init();
 

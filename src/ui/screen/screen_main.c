@@ -33,7 +33,7 @@ static void time_panel_create(lv_obj_t *parent)
     {
         lv_obj_t *time_label = lv_label_create(time_panel);
         lv_obj_center(time_label);
-        lv_obj_set_style_bg_opa(time_label, LV_OPA_COVER, 0);
+        // lv_obj_set_style_bg_opa(time_label, LV_OPA_COVER, 0);
         lv_obj_set_style_text_font(time_label, &lv_font_montserrat_48, 0);
         current_time = time(NULL);
         local_time = localtime(&current_time);

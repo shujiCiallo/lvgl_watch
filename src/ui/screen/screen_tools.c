@@ -8,6 +8,12 @@ static lv_obj_t *s_tools_panel = NULL;
 static void title_create(lv_obj_t* parent);
 static void tools_create(lv_obj_t *parent);
 
+typedef struct tools {
+    lv_obj_t *button;
+    lv_obj_t *label;
+    const char *text;
+}tools_t;
+
 void screen_tools_create(lv_obj_t *parent)
 {
 
@@ -53,30 +59,37 @@ static void title_create(lv_obj_t *parent)
     lv_obj_set_grid_cell(time_label, LV_GRID_ALIGN_END,
         1, 1, LV_GRID_ALIGN_STRETCH, 0, 1);
 
-
 }
+
+lv_style_t tools_style;
 
 static void tools_create(lv_obj_t *parent)
 {
-
-    lv_obj_t *SD_crad = lv_btn_create(parent);
-    lv_obj_t *USB = lv_btn_create(parent);
-    lv_obj_t *gear = lv_btn_create(parent);
-    lv_obj_t *trash = lv_btn_create(parent);
-    lv_obj_t *drive = lv_btn_create(parent);
-    lv_obj_t *folder = lv_btn_create(parent);
-
-    lv_obj_t *tools_buf[] = {
-        SD_crad, USB, gear, trash, drive, folder
+    static tools_t tools_buf[] = {
+        {NULL, NULL, LV_SYMBOL_SD_CARD},
+        {NULL, NULL, LV_SYMBOL_USB},
+        {NULL, NULL, LV_SYMBOL_SETTINGS},
+        {NULL, NULL, LV_SYMBOL_TRASH},
+        {NULL, NULL, LV_SYMBOL_DRIVE},
+        {NULL, NULL, LV_SYMBOL_FILE}
     };
+
+    lv_style_init(&tools_style);
+    lv_style_set_text_font(&tools_style, &lv_font_montserrat_48);
 
     size_t num = sizeof(tools_buf) / sizeof(tools_buf[0]);
     for (size_t i = 0; i < num; i++) {
         int col = i % 2;
         int row = i / 2;
-        lv_obj_set_grid_cell(tools_buf[i], LV_GRID_ALIGN_STRETCH,
+        tools_buf[i].button =  lv_btn_create(parent);
+        tools_buf[i].label = lv_label_create(tools_buf[i].button);
+        lv_obj_center(tools_buf[i].label);
+        lv_obj_add_style(tools_buf[i].label, &tools_style, 0);
+        lv_label_set_text(tools_buf[i].label, tools_buf[i].text);
+        lv_obj_set_grid_cell(tools_buf[i].button, LV_GRID_ALIGN_STRETCH,
                             col, 1, LV_GRID_ALIGN_STRETCH,
                             row + 1, 1);
     }
+
 
 }

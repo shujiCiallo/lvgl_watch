@@ -335,6 +335,30 @@ src/ui/event/event.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/event/event.c.s
 .PHONY : src/ui/event/event.c.s
 
+src/ui/screen/screen_app.o: src/ui/screen/screen_app.c.o
+.PHONY : src/ui/screen/screen_app.o
+
+# target to build an object file
+src/ui/screen/screen_app.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_app.c.o
+.PHONY : src/ui/screen/screen_app.c.o
+
+src/ui/screen/screen_app.i: src/ui/screen/screen_app.c.i
+.PHONY : src/ui/screen/screen_app.i
+
+# target to preprocess a source file
+src/ui/screen/screen_app.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_app.c.i
+.PHONY : src/ui/screen/screen_app.c.i
+
+src/ui/screen/screen_app.s: src/ui/screen/screen_app.c.s
+.PHONY : src/ui/screen/screen_app.s
+
+# target to generate assembly for a file
+src/ui/screen/screen_app.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ui/screen/screen_app.c.s
+.PHONY : src/ui/screen/screen_app.c.s
+
 src/ui/screen/screen_main.o: src/ui/screen/screen_main.c.o
 .PHONY : src/ui/screen/screen_main.o
 
@@ -485,6 +509,9 @@ help:
 	@echo "... src/ui/event/event.o"
 	@echo "... src/ui/event/event.i"
 	@echo "... src/ui/event/event.s"
+	@echo "... src/ui/screen/screen_app.o"
+	@echo "... src/ui/screen/screen_app.i"
+	@echo "... src/ui/screen/screen_app.s"
 	@echo "... src/ui/screen/screen_main.o"
 	@echo "... src/ui/screen/screen_main.i"
 	@echo "... src/ui/screen/screen_main.s"

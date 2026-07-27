@@ -5,7 +5,6 @@ time_t current_time;
 struct tm *local_time;
 char time_buf[24];
 
-
 void time_cb(lv_timer_t *t)
 {
     lv_obj_t *label = lv_timer_get_user_data(t);

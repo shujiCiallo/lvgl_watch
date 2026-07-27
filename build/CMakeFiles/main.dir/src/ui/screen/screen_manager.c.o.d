@@ -429,4 +429,17 @@ CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o: \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_4.h \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_5.h \
  /home/shuji/lvgl/watch/src/ui/screen/screen_main.h \
- /home/shuji/lvgl/watch/src/ui/screen/screen_tools.h
+ /home/shuji/lvgl/watch/src/ui/screen/screen_tools.h \
+ /home/shuji/lvgl/watch/src/ui/event/event.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
+ /usr/include/x86_64-linux-gnu/bits/endian.h \
+ /usr/include/x86_64-linux-gnu/bits/endianness.h \
+ /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/timer_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
+ /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h

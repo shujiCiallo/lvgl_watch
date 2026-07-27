@@ -38,7 +38,7 @@ static void title_create(lv_obj_t *parent)
 {
     lv_style_init(&title_style);
     lv_style_set_bg_opa(&title_style, LV_OPA_COVER);
-    lv_style_set_bg_color(&title_style, lv_color_hex(0x1234f234));
+    // lv_style_set_bg_color(&title_style, lv_color_hex(0x1234f234));
     lv_style_set_text_font(&title_style, &lv_font_montserrat_36);
 
     lv_obj_t *bt_label = lv_label_create(parent);
@@ -58,6 +58,7 @@ static void title_create(lv_obj_t *parent)
     lv_label_set_text(time_label, time_buf);
     lv_obj_set_grid_cell(time_label, LV_GRID_ALIGN_END,
         1, 1, LV_GRID_ALIGN_STRETCH, 0, 1);
+    lv_timer_create(time_cb, 1000, time_label);
 
 }
 

@@ -1,6 +1,7 @@
 #include "screen_manager.h"
 #include "screen_main.h"
 #include "screen_tools.h"
+#include "event/event.h"
 
 lv_obj_t* g_tileview;
 int g_tile_index;

@@ -7,9 +7,11 @@
 lv_obj_t* g_tileview;
 int g_tile_index;
 
+static void tileview_event_cb(lv_event_t *e);
+
 void screen_tileview_create(lv_obj_t *parent)
 {
-    lv_obj_t *g_tileview = lv_tileview_create(parent);
+    g_tileview = lv_tileview_create(parent);
     lv_obj_set_size(g_tileview, lv_pct(100), lv_pct(100));
     lv_obj_set_scrollbar_mode(g_tileview, LV_SCROLLBAR_MODE_OFF);
 
@@ -28,6 +30,8 @@ void screen_tileview_create(lv_obj_t *parent)
 
 static void tileview_event_cb(lv_event_t *e)
 {
-    lv_obj_t *tv = lv_event_get_target(e);
-    lv_obj_t *act = lv_tileview_get_tile_act(tv);
+    lv_event_code_t code = lv_event_get_code(e);
+    if (code == LV_EVENT_GESTURE) {
+
+    }
 }

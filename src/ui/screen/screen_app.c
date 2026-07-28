@@ -29,8 +29,16 @@ static void applist_create(lv_obj_t *parent)
     lv_style_set_text_color(&applist_style, lv_color_black());
 
     Button_t applist[] = {
-        {NULL,NULL,LV_SYMBOL_WIFI " WIFI"},
         {NULL,NULL,LV_SYMBOL_VOLUME_MID " VOLUME"},
+        {NULL,NULL,LV_SYMBOL_VIDEO " VIDEO"},
+        {NULL,NULL,LV_SYMBOL_IMAGE " IMAGE"},
+        {NULL,NULL,LV_SYMBOL_CALL " CALL"},
+        {NULL,NULL,LV_SYMBOL_WIFI " WIFI"},
+        {NULL,NULL,LV_SYMBOL_BLUETOOTH " BLUETOOTH"},
+        {NULL,NULL,LV_SYMBOL_DIRECTORY " DIRECTORY"},
+        {NULL,NULL,LV_SYMBOL_ENVELOPE " ENVELOPE"},
+        {NULL,NULL,LV_SYMBOL_SETTINGS " SETTINGS"},
+        {NULL,NULL,LV_SYMBOL_POWER " POWER"},
     };
     size_t num = sizeof(applist) / sizeof(applist[0]);
     for (size_t i = 0; i < num; i++)

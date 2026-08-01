@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/main.dir/src/ui/event/event.c.o.d"
   "CMakeFiles/main.dir/src/ui/screen/screen_app.c.o"
   "CMakeFiles/main.dir/src/ui/screen/screen_app.c.o.d"
+  "CMakeFiles/main.dir/src/ui/screen/screen_card.c.o"
+  "CMakeFiles/main.dir/src/ui/screen/screen_card.c.o.d"
   "CMakeFiles/main.dir/src/ui/screen/screen_main.c.o"
   "CMakeFiles/main.dir/src/ui/screen/screen_main.c.o.d"
   "CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o"

@@ -2,6 +2,7 @@
 #include "screen_app.h"
 #include "screen_main.h"
 #include "screen_tools.h"
+#include "screen/screen_card.h"
 #include "event/event.h"
 
 lv_obj_t* g_tileview;
@@ -23,6 +24,7 @@ void screen_tileview_create(lv_obj_t *parent)
 
     screen_tools_create(tool_panel);
     screen_app_create(app_panel);
+    screen_card_create(card_panel);
     screen_main_create(home_panel);
     lv_tileview_set_tile(g_tileview, home_panel, LV_ANIM_OFF);
 

@@ -50,7 +50,7 @@ lv_style_t music_style;
 static void music_panel_create(lv_obj_t *parent)
 {
     lv_obj_t *music_panel = lv_obj_create(parent);
-    lv_obj_set_size(music_panel, lv_pct(100), lv_pct(25));
+    lv_obj_set_size(music_panel, lv_pct(100), lv_pct(35));
     lv_obj_set_flex_flow(music_panel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(music_panel,
                       LV_FLEX_ALIGN_START,
@@ -84,7 +84,7 @@ static void music_panel_create(lv_obj_t *parent)
 static void info_panel_create(lv_obj_t *parent)
 {
     lv_obj_t *info_panel = lv_obj_create(parent);
-    lv_obj_set_size(info_panel, lv_pct(100), lv_pct(35));
+    lv_obj_set_size(info_panel, lv_pct(100), lv_pct(25));
     lv_obj_set_flex_flow(info_panel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(info_panel,
                       LV_FLEX_ALIGN_START,

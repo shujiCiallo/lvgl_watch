@@ -20,13 +20,14 @@
   #include <pthread.h>
 #endif
 #include "lvgl/lvgl.h"
-#include "../lvgl/examples/lv_examples.h"
-#include "../lvgl/demos/lv_demos.h"
+// #include "../lvgl/examples/lv_examples.h"
+// #include "../lvgl/demos/lv_demos.h"
 #include <SDL2/SDL.h>
 
 #include "hal/hal.h"
 
 #include "ui/ui.h"
+#include "core/data_center.h"
 
 /*********************
  *      DEFINES
@@ -65,6 +66,7 @@ int main(int argc, char **argv)
   /*Initialize the HAL (display, input devices, tick) for LVGL*/
   sdl_hal_init(320, 400);
 
+  data_center_init();
   ui_init();
 
 

@@ -83,10 +83,24 @@ CMakeFiles/main.dir/src/mouse_cursor_icon.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/src/mouse_cursor_icon.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/shuji/lvgl/watch/src/mouse_cursor_icon.c -o CMakeFiles/main.dir/src/mouse_cursor_icon.c.s
 
+CMakeFiles/main.dir/src/core/data_center.c.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/core/data_center.c.o: ../src/core/data_center.c
+CMakeFiles/main.dir/src/core/data_center.c.o: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/main.dir/src/core/data_center.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/core/data_center.c.o -MF CMakeFiles/main.dir/src/core/data_center.c.o.d -o CMakeFiles/main.dir/src/core/data_center.c.o -c /home/shuji/lvgl/watch/src/core/data_center.c
+
+CMakeFiles/main.dir/src/core/data_center.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/src/core/data_center.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/shuji/lvgl/watch/src/core/data_center.c > CMakeFiles/main.dir/src/core/data_center.c.i
+
+CMakeFiles/main.dir/src/core/data_center.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/src/core/data_center.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/shuji/lvgl/watch/src/core/data_center.c -o CMakeFiles/main.dir/src/core/data_center.c.s
+
 CMakeFiles/main.dir/src/hal/hal.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/hal/hal.c.o: ../src/hal/hal.c
 CMakeFiles/main.dir/src/hal/hal.c.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/main.dir/src/hal/hal.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/main.dir/src/hal/hal.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/hal/hal.c.o -MF CMakeFiles/main.dir/src/hal/hal.c.o.d -o CMakeFiles/main.dir/src/hal/hal.c.o -c /home/shuji/lvgl/watch/src/hal/hal.c
 
 CMakeFiles/main.dir/src/hal/hal.c.i: cmake_force
@@ -100,7 +114,7 @@ CMakeFiles/main.dir/src/hal/hal.c.s: cmake_force
 CMakeFiles/main.dir/src/main.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/main.c.o: ../src/main.c
 CMakeFiles/main.dir/src/main.c.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/main.dir/src/main.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/main.dir/src/main.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/main.c.o -MF CMakeFiles/main.dir/src/main.c.o.d -o CMakeFiles/main.dir/src/main.c.o -c /home/shuji/lvgl/watch/src/main.c
 
 CMakeFiles/main.dir/src/main.c.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/main.dir/src/main.c.s: cmake_force
 CMakeFiles/main.dir/src/ui/event/event.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/ui/event/event.c.o: ../src/ui/event/event.c
 CMakeFiles/main.dir/src/ui/event/event.c.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/main.dir/src/ui/event/event.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/main.dir/src/ui/event/event.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/ui/event/event.c.o -MF CMakeFiles/main.dir/src/ui/event/event.c.o.d -o CMakeFiles/main.dir/src/ui/event/event.c.o -c /home/shuji/lvgl/watch/src/ui/event/event.c
 
 CMakeFiles/main.dir/src/ui/event/event.c.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/main.dir/src/ui/event/event.c.s: cmake_force
 CMakeFiles/main.dir/src/ui/screen/screen_app.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/ui/screen/screen_app.c.o: ../src/ui/screen/screen_app.c
 CMakeFiles/main.dir/src/ui/screen/screen_app.c.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/main.dir/src/ui/screen/screen_app.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/main.dir/src/ui/screen/screen_app.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/ui/screen/screen_app.c.o -MF CMakeFiles/main.dir/src/ui/screen/screen_app.c.o.d -o CMakeFiles/main.dir/src/ui/screen/screen_app.c.o -c /home/shuji/lvgl/watch/src/ui/screen/screen_app.c
 
 CMakeFiles/main.dir/src/ui/screen/screen_app.c.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/main.dir/src/ui/screen/screen_app.c.s: cmake_force
 CMakeFiles/main.dir/src/ui/screen/screen_main.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/ui/screen/screen_main.c.o: ../src/ui/screen/screen_main.c
 CMakeFiles/main.dir/src/ui/screen/screen_main.c.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/main.dir/src/ui/screen/screen_main.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/main.dir/src/ui/screen/screen_main.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/ui/screen/screen_main.c.o -MF CMakeFiles/main.dir/src/ui/screen/screen_main.c.o.d -o CMakeFiles/main.dir/src/ui/screen/screen_main.c.o -c /home/shuji/lvgl/watch/src/ui/screen/screen_main.c
 
 CMakeFiles/main.dir/src/ui/screen/screen_main.c.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/main.dir/src/ui/screen/screen_main.c.s: cmake_force
 CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o: ../src/ui/screen/screen_manager.c
 CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o -MF CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o.d -o CMakeFiles/main.dir/src/ui/screen/screen_manager.c.o -c /home/shuji/lvgl/watch/src/ui/screen/screen_manager.c
 
 CMakeFiles/main.dir/src/ui/screen/screen_manager.c.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/main.dir/src/ui/screen/screen_manager.c.s: cmake_force
 CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o: ../src/ui/screen/screen_tools.c
 CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o -MF CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o.d -o CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o -c /home/shuji/lvgl/watch/src/ui/screen/screen_tools.c
 
 CMakeFiles/main.dir/src/ui/screen/screen_tools.c.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/main.dir/src/ui/screen/screen_tools.c.s: cmake_force
 CMakeFiles/main.dir/src/ui/style/app_styles.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/ui/style/app_styles.c.o: ../src/ui/style/app_styles.c
 CMakeFiles/main.dir/src/ui/style/app_styles.c.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/main.dir/src/ui/style/app_styles.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/main.dir/src/ui/style/app_styles.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/ui/style/app_styles.c.o -MF CMakeFiles/main.dir/src/ui/style/app_styles.c.o.d -o CMakeFiles/main.dir/src/ui/style/app_styles.c.o -c /home/shuji/lvgl/watch/src/ui/style/app_styles.c
 
 CMakeFiles/main.dir/src/ui/style/app_styles.c.i: cmake_force
@@ -198,7 +212,7 @@ CMakeFiles/main.dir/src/ui/style/app_styles.c.s: cmake_force
 CMakeFiles/main.dir/src/ui/ui.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/ui/ui.c.o: ../src/ui/ui.c
 CMakeFiles/main.dir/src/ui/ui.c.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/main.dir/src/ui/ui.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/main.dir/src/ui/ui.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/main.dir/src/ui/ui.c.o -MF CMakeFiles/main.dir/src/ui/ui.c.o.d -o CMakeFiles/main.dir/src/ui/ui.c.o -c /home/shuji/lvgl/watch/src/ui/ui.c
 
 CMakeFiles/main.dir/src/ui/ui.c.i: cmake_force
@@ -212,6 +226,7 @@ CMakeFiles/main.dir/src/ui/ui.c.s: cmake_force
 # Object files for target main
 main_OBJECTS = \
 "CMakeFiles/main.dir/src/mouse_cursor_icon.c.o" \
+"CMakeFiles/main.dir/src/core/data_center.c.o" \
 "CMakeFiles/main.dir/src/hal/hal.c.o" \
 "CMakeFiles/main.dir/src/main.c.o" \
 "CMakeFiles/main.dir/src/ui/event/event.c.o" \
@@ -226,6 +241,7 @@ main_OBJECTS = \
 main_EXTERNAL_OBJECTS =
 
 ../bin/main: CMakeFiles/main.dir/src/mouse_cursor_icon.c.o
+../bin/main: CMakeFiles/main.dir/src/core/data_center.c.o
 ../bin/main: CMakeFiles/main.dir/src/hal/hal.c.o
 ../bin/main: CMakeFiles/main.dir/src/main.c.o
 ../bin/main: CMakeFiles/main.dir/src/ui/event/event.c.o
@@ -244,7 +260,7 @@ main_EXTERNAL_OBJECTS =
 ../bin/main: lvgl_shared/liblvgl.a
 ../bin/main: lvgl_shared/lib/liblvgl_thorvg.a
 ../bin/main: CMakeFiles/main.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable ../bin/main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shuji/lvgl/watch/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable ../bin/main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

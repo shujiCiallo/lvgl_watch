@@ -239,6 +239,30 @@ lvgl_demos/fast:
 	$(MAKE) $(MAKESILENT) -f lvgl_shared/CMakeFiles/lvgl_demos.dir/build.make lvgl_shared/CMakeFiles/lvgl_demos.dir/build
 .PHONY : lvgl_demos/fast
 
+src/core/data_center.o: src/core/data_center.c.o
+.PHONY : src/core/data_center.o
+
+# target to build an object file
+src/core/data_center.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/core/data_center.c.o
+.PHONY : src/core/data_center.c.o
+
+src/core/data_center.i: src/core/data_center.c.i
+.PHONY : src/core/data_center.i
+
+# target to preprocess a source file
+src/core/data_center.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/core/data_center.c.i
+.PHONY : src/core/data_center.c.i
+
+src/core/data_center.s: src/core/data_center.c.s
+.PHONY : src/core/data_center.s
+
+# target to generate assembly for a file
+src/core/data_center.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/core/data_center.c.s
+.PHONY : src/core/data_center.c.s
+
 src/hal/hal.o: src/hal/hal.c.o
 .PHONY : src/hal/hal.o
 
@@ -497,6 +521,9 @@ help:
 	@echo "... lvgl_examples"
 	@echo "... lvgl_thorvg"
 	@echo "... main"
+	@echo "... src/core/data_center.o"
+	@echo "... src/core/data_center.i"
+	@echo "... src/core/data_center.s"
 	@echo "... src/hal/hal.o"
 	@echo "... src/hal/hal.i"
 	@echo "... src/hal/hal.s"

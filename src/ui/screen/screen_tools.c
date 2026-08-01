@@ -2,6 +2,7 @@
 #include "lvgl.h"
 #include "event/event.h"
 #include "screen_manager.h"
+#include "core/data_center.h"
 
 static lv_obj_t *s_tools_panel = NULL;
 
@@ -55,10 +56,11 @@ static void title_create(lv_obj_t *parent)
 
     lv_obj_t *time_label = lv_label_create(parent);
     lv_obj_add_style(time_label, &title_style, 0);
-    lv_label_set_text(time_label, time_buf);
+    // lv_label_set_text(time_label, time_buf);
+    lv_label_bind_text(time_label, &g_time_subject, "%s");
     lv_obj_set_grid_cell(time_label, LV_GRID_ALIGN_END,
         1, 1, LV_GRID_ALIGN_STRETCH, 0, 1);
-    lv_timer_create(time_cb, 1000, time_label);
+    // lv_timer_create(time_cb, 1000, time_label);
 
 }
 

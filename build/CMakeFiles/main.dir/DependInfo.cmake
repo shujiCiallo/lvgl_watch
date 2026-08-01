@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/shuji/lvgl/watch/src/core/data_center.c" "CMakeFiles/main.dir/src/core/data_center.c.o" "gcc" "CMakeFiles/main.dir/src/core/data_center.c.o.d"
   "/home/shuji/lvgl/watch/src/hal/hal.c" "CMakeFiles/main.dir/src/hal/hal.c.o" "gcc" "CMakeFiles/main.dir/src/hal/hal.c.o.d"
   "/home/shuji/lvgl/watch/src/main.c" "CMakeFiles/main.dir/src/main.c.o" "gcc" "CMakeFiles/main.dir/src/main.c.o.d"
   "/home/shuji/lvgl/watch/src/mouse_cursor_icon.c" "CMakeFiles/main.dir/src/mouse_cursor_icon.c.o" "gcc" "CMakeFiles/main.dir/src/mouse_cursor_icon.c.o.d"

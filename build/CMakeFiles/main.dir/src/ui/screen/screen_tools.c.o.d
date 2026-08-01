@@ -441,4 +441,5 @@ CMakeFiles/main.dir/src/ui/screen/screen_tools.c.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
- /home/shuji/lvgl/watch/src/ui/screen/screen_manager.h
+ /home/shuji/lvgl/watch/src/ui/screen/screen_manager.h \
+ /home/shuji/lvgl/watch/src/core/data_center.h

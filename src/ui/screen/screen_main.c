@@ -3,7 +3,7 @@
 #include "event/event.h"
 #include "style/app_styles.h"
 #include "screen/screen_manager.h"
-#include <time.h>
+#include "core/data_center.h"
 
 static lv_obj_t *s_home_panel = NULL;
 
@@ -27,6 +27,7 @@ void screen_main_create(lv_obj_t *parent)
 
 static void time_panel_create(lv_obj_t *parent)
 {
+
     lv_obj_t *time_panel = lv_obj_create(parent);
     lv_obj_set_align(time_panel, LV_ALIGN_TOP_MID);
     lv_obj_set_size(time_panel, lv_pct(100), lv_pct(40));
@@ -35,14 +36,13 @@ static void time_panel_create(lv_obj_t *parent)
         lv_obj_center(time_label);
         // lv_obj_set_style_bg_opa(time_label, LV_OPA_COVER, 0);
         lv_obj_set_style_text_font(time_label, &lv_font_montserrat_48, 0);
-        current_time = time(NULL);
-        local_time = localtime(&current_time);
-        strftime(time_buf, sizeof(time_buf), "%H:%M", local_time);
-        lv_label_set_text(time_label, time_buf);
-        lv_timer_create(time_cb, 1000, time_label);
-
+        // current_time = time(NULL);
+        // local_time = localtime(&current_time);
+        // strftime(time_buf, sizeof(time_buf), "%H:%M", local_time);
+        // lv_label_set_text(time_label, time_buf);
+        // lv_timer_create(time_cb, 1000, time_label);
+        lv_label_bind_text(time_label, &g_time_subject, "%s");
     }
-
 
 }
 

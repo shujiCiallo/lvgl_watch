@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "../bin/main"
   "../bin/main.pdb"
+  "CMakeFiles/main.dir/src/core/data_center.c.o"
+  "CMakeFiles/main.dir/src/core/data_center.c.o.d"
   "CMakeFiles/main.dir/src/hal/hal.c.o"
   "CMakeFiles/main.dir/src/hal/hal.c.o.d"
   "CMakeFiles/main.dir/src/main.c.o"

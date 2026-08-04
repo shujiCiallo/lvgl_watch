@@ -3,6 +3,8 @@
 
 #include "lvgl.h"
 
+typedef struct label_data label_data_t;
+
 void screen_card_create(lv_obj_t *parent);
 
 #endif

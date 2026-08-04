@@ -80,18 +80,18 @@ static lv_obj_t *sport_card_create(lv_obj_t* parent)
     {
         lv_obj_t *meter = lv_obj_create(sport_card);
         lv_obj_clear_flag(meter, LV_OBJ_FLAG_SCROLLABLE);
+        lv_obj_remove_style_all(meter);
         lv_obj_set_flex_grow(meter, 1);
         lv_obj_set_width(meter, lv_pct(100));
         // lv_obj_set_height(meter, lv_pct(50));
-        // lv_obj_remove_style_all(meter);
         // lv_obj_center(meter);
         artivity_rings_create(meter);
 
         lv_obj_t *info = lv_obj_create(sport_card);
+        lv_obj_remove_style_all(info);
         lv_obj_set_flex_grow(info, 1);
         // lv_obj_set_height(info, lv_pct(50));
         lv_obj_set_width(info, lv_pct(100));
-        // lv_obj_remove_style_all(info);
         lv_obj_set_flex_flow(info, LV_FLEX_FLOW_ROW);
         lv_obj_set_flex_align(info, LV_FLEX_ALIGN_SPACE_EVENLY,
             LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);

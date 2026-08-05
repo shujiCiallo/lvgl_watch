@@ -4,6 +4,7 @@
 #include "lvgl.h"
 
 extern lv_subject_t g_time_subject;
+extern lv_subject_t g_date_subject;
 
 void data_center_init(void);
 

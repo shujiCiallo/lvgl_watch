@@ -20,9 +20,9 @@ typedef struct label_data {
 void screen_card_create(lv_obj_t *parent)
 {
     s_screen_card = parent;
+    // lv_obj_add_style(s_screen_card, &style_screen_bg, 0);
     lv_obj_set_style_pad_all(s_screen_card, 8, 0);
     lv_obj_set_flex_flow(s_screen_card, LV_FLEX_FLOW_COLUMN);
-    // lv_obj_add_style(s_screen_card, &style_screen_bg, 0);
 
     lv_obj_t *title = lv_obj_create(parent);
     lv_obj_remove_style_all(title);
@@ -35,11 +35,11 @@ void screen_card_create(lv_obj_t *parent)
     title_create(title);
 
     lv_obj_t *card_panel = lv_obj_create(s_screen_card);
+    lv_obj_remove_style_all(card_panel);
     lv_obj_set_flex_flow(card_panel, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(card_panel, LV_FLEX_ALIGN_START,
         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-    lv_obj_remove_style_all(card_panel);
-    // lv_obj_set_flex_grow(card_panel, 1);
+    lv_obj_set_flex_grow(card_panel, 1);
     // lv_obj_set_height(card_panel, lv_pct(100) - lv_obj_get_height(title));
     card_create(card_panel);
     lv_obj_set_size(card_panel, lv_pct(100), LV_SIZE_CONTENT);
@@ -58,7 +58,8 @@ static void title_create(lv_obj_t *parent)
         lv_label_bind_text(time_label, &g_time_subject, "%s");
 
         lv_obj_t *date = lv_label_create(parent);
-        lv_label_set_text(date, "date");
+        // lv_label_set_text(date, "date");
+        lv_label_bind_text(date, &g_date_subject, "%s");
     }
 }
 
@@ -70,7 +71,7 @@ static void card_create(lv_obj_t *parent)
 static lv_obj_t *sport_card_create(lv_obj_t* parent)
 {
     lv_obj_t *sport_card = lv_btn_create(parent);
-    lv_obj_set_style_bg_color(sport_card, COLOR_ERROR, 0);
+    lv_obj_set_style_bg_color(sport_card, COLOR_SURFACE, 0);
     lv_obj_set_flex_flow(sport_card, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(sport_card, LV_FLEX_ALIGN_START,
         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
@@ -82,13 +83,13 @@ static lv_obj_t *sport_card_create(lv_obj_t* parent)
         lv_obj_clear_flag(meter, LV_OBJ_FLAG_SCROLLABLE);
         lv_obj_remove_style_all(meter);
         lv_obj_set_flex_grow(meter, 1);
-        lv_obj_set_width(meter, lv_pct(100));
+        // lv_obj_set_width(meter, lv_pct(100));
         // lv_obj_set_height(meter, lv_pct(50));
         // lv_obj_center(meter);
         artivity_rings_create(meter);
 
         lv_obj_t *info = lv_obj_create(sport_card);
-        lv_obj_remove_style_all(info);
+        // lv_obj_remove_style_all(info);
         lv_obj_set_flex_grow(info, 1);
         // lv_obj_set_height(info, lv_pct(50));
         lv_obj_set_width(info, lv_pct(100));
@@ -96,7 +97,8 @@ static lv_obj_t *sport_card_create(lv_obj_t* parent)
         lv_obj_set_flex_align(info, LV_FLEX_ALIGN_SPACE_EVENLY,
             LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
         lv_obj_set_style_text_color(info, lv_color_black(), 0);
-        lv_obj_set_style_text_font(info, &lv_font_montserrat_24, 0);
+        lv_obj_set_style_text_font(info, &lv_font_montserrat_18, 0);
+        lv_obj_set_style_pad_all(info, 8, 0);
 
         label_data_create(info);
     }
@@ -155,16 +157,31 @@ static lv_obj_t *label_data_create(lv_obj_t *parent)
     // lv_subject_t* data[] = {};
     for (size_t i = 0; i < num; i++) {
         label[i].parent = lv_obj_create(parent);
+        lv_obj_remove_style_all(label[i].parent);
         lv_obj_set_flex_grow(label[i].parent,1);
-        // lv_obj_remove_style_all(label[i].parent);
+        lv_obj_set_height(label[i].parent, lv_pct(100));
         lv_obj_set_flex_flow(label[i].parent, LV_FLEX_FLOW_COLUMN);
+        lv_obj_set_flex_align(label[i].parent, LV_FLEX_ALIGN_CENTER,
+            LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
 
         label[i].line1 = lv_label_create(label[i].parent);
+        // lv_obj_set_style_bg_color(label[i].line1, COLOR_ERROR, 0);
+        lv_obj_set_style_bg_opa(label[i].line1, LV_OPA_COVER, 0);
         lv_obj_set_flex_grow(label[i].line1, 1);
+        lv_obj_set_height(label[i].line1, lv_pct(100));
+        lv_obj_set_width(label[i].line1, lv_pct(100));
+        lv_obj_set_style_text_align(label[i].line1, LV_TEXT_ALIGN_CENTER, 0);
+        // lv_obj_center(label[i].line1);
         lv_label_set_text(label[i].line1, title[i]);
 
         label[i].line2 = lv_label_create(label[i].parent);
+        // lv_obj_set_style_bg_color(label[i].line2, COLOR_ERROR, 0);
+        lv_obj_set_style_bg_opa(label[i].line2, LV_OPA_COVER, 0);
         lv_obj_set_flex_grow(label[i].line2, 1);
+        lv_obj_set_height(label[i].line2, lv_pct(100));
+        lv_obj_set_width(label[i].line2, lv_pct(100));
+        lv_obj_set_style_text_align(label[i].line2, LV_TEXT_ALIGN_CENTER, 0);
+        // lv_obj_center(label[i].line2);
         lv_label_set_text(label[i].line2, title[i]);
         // lv_label_bind_text(label[i].line2, data[i], "%s");
 

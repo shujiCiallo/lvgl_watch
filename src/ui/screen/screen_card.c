@@ -190,7 +190,7 @@ static lv_obj_t *label_data_create(lv_obj_t *parent)
 /* 圆环数据观察者回调:把 subject 数值写到 arc */
 static void arc_boserver_cb(lv_observer_t *obs, lv_subject_t *sub)
 {
-    lv_obj_t *arc = lv_observer_get_target(obs);
+    lv_obj_t *arc = lv_observer_get_user_data(obs);
     int16_t value = lv_subject_get_int(sub);
     lv_arc_set_value(arc, value);
 }

@@ -427,6 +427,7 @@ CMakeFiles/main.dir/src/ui/screen/screen_app.c.o: \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_3.h \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_4.h \
  /home/shuji/lvgl/lvgl/include/lvgl/api_map/lv_api_map_v9_5.h \
+ /home/shuji/lvgl/watch/src/ui/screen/screen_app.h \
  /home/shuji/lvgl/watch/src/ui/style/app_styles.h \
  /home/shuji/lvgl/lvgl/include/lvgl/lvgl.h \
  /home/shuji/lvgl/watch/src/ui/style/app_colors.h \

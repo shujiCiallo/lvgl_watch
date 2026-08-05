@@ -6,6 +6,10 @@
 extern lv_subject_t g_time_subject;
 extern lv_subject_t g_date_subject;
 
+extern lv_subject_t g_steps_subject;
+extern lv_subject_t g_calorie_subject;
+extern lv_subject_t g_duration_subject;
+
 void data_center_init(void);
 
 #endif

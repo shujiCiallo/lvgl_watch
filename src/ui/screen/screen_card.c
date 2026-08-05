@@ -154,7 +154,10 @@ static lv_obj_t *label_data_create(lv_obj_t *parent)
     label_data_t label[3] = {};
     size_t num = sizeof(label)/sizeof(label[0]);
     char *title[] = {"calorie", "steps","times"};
-    // lv_subject_t* data[] = {};
+    lv_subject_t *data[] = {
+        &g_calorie_subject,
+        &g_steps_subject,
+        &g_duration_subject};
     for (size_t i = 0; i < num; i++) {
         label[i].parent = lv_obj_create(parent);
         lv_obj_remove_style_all(label[i].parent);
@@ -182,8 +185,8 @@ static lv_obj_t *label_data_create(lv_obj_t *parent)
         lv_obj_set_width(label[i].line2, lv_pct(100));
         lv_obj_set_style_text_align(label[i].line2, LV_TEXT_ALIGN_CENTER, 0);
         // lv_obj_center(label[i].line2);
-        lv_label_set_text(label[i].line2, title[i]);
-        // lv_label_bind_text(label[i].line2, data[i], "%s");
+        // lv_label_set_text(label[i].line2, title[i]);
+        lv_label_bind_text(label[i].line2, data[i], "%d");
 
     }
 

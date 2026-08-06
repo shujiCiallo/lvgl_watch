@@ -8,6 +8,8 @@
 static void title_create(lv_obj_t *parent);
 static void tools_create(lv_obj_t *parent);
 
+static void bat_observer_cb(lv_observer_t *obs,lv_subject_t *sub);
+
 /* 创建工具屏幕:grid 布局的标题栏 + 工具按钮区 */
 void screen_tools_create(screen_tools_t *self, lv_obj_t *parent)
 {
@@ -39,14 +41,16 @@ static void title_create(lv_obj_t *parent)
     lv_obj_t *bt_label = lv_label_create(parent);
     lv_label_set_text(bt_label, LV_SYMBOL_BLUETOOTH);
     lv_obj_add_style(bt_label, &title_style, 0);
-    lv_obj_set_grid_cell(bt_label, LV_GRID_ALIGN_START,
-        0, 1, LV_GRID_ALIGN_CENTER, 0, 1);
+    lv_obj_set_grid_cell(bt_label, LV_GRID_ALIGN_END,
+        0, 1, LV_GRID_ALIGN_STRETCH, 0, 1);
 
     lv_obj_t *bat_label = lv_label_create(parent);
     lv_obj_add_style(bat_label, &title_style, 0);
-    lv_label_set_text(bat_label, LV_SYMBOL_BATTERY_1);
-    lv_obj_set_grid_cell(bat_label, LV_GRID_ALIGN_END,
-        0, 1, LV_GRID_ALIGN_STRETCH, 0, 1);
+    lv_obj_set_grid_cell(bat_label, LV_GRID_ALIGN_START,
+        0, 1, LV_GRID_ALIGN_CENTER, 0, 1);
+    lv_label_set_text(bat_label, "100" LV_SYMBOL_BATTERY_FULL);
+    lv_subject_add_observer(&g_bat_subject, bat_observer_cb,
+        bat_label);
 
     lv_obj_t *time_label = lv_label_create(parent);
     lv_obj_add_style(time_label, &title_style, 0);
@@ -86,4 +90,26 @@ static void tools_create(lv_obj_t *parent)
                             col, 1, LV_GRID_ALIGN_STRETCH,
                             row + 1, 1);
     }
+}
+
+static void bat_observer_cb(lv_observer_t *obs,
+    lv_subject_t *sub)
+{
+    uint8_t bat = lv_subject_get_int(&g_bat_subject);
+    const char *symbol_bat;
+    if (bat >= 75) {
+        symbol_bat =  LV_SYMBOL_BATTERY_FULL;
+    } else if (bat < 75 && bat >= 50) {
+        symbol_bat =  LV_SYMBOL_BATTERY_3;
+    } else if (bat < 50 && bat >= 25) {
+        symbol_bat =  LV_SYMBOL_BATTERY_2;
+    } else if (bat < 25) {
+        symbol_bat =  LV_SYMBOL_BATTERY_1;
+    }
+
+    char bat_buf[24];
+    lv_snprintf(bat_buf, sizeof(bat_buf), "%d%s",
+        bat, symbol_bat);
+    lv_obj_t *label = lv_observer_get_user_data(obs);
+    lv_label_set_text(label, bat_buf);
 }

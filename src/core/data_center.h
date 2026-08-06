@@ -6,6 +6,9 @@
 extern lv_subject_t g_time_subject;
 extern lv_subject_t g_date_subject;
 
+extern lv_subject_t g_bat_subject;
+extern lv_subject_t g_symbol_bat_subject;
+
 extern lv_subject_t g_steps_subject;
 extern lv_subject_t g_calorie_subject;
 extern lv_subject_t g_duration_subject;

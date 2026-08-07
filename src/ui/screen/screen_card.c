@@ -106,9 +106,9 @@ static lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent)
         lv_obj_add_flag(meter, LV_OBJ_FLAG_EVENT_BUBBLE);
         lv_obj_set_flex_grow(meter, 1);
         artivity_rings_t configs[] = {
-            {NULL, 60, 6, 400, COLOR_ERROR},
-            {NULL, 90, 6, 6000, COLOR_PRIMARY_DARK},
-            {NULL, 120, 6, 1200, COLOR_SECONDARY}
+            {NULL, 60, 10, 400, COLOR_ERROR},
+            {NULL, 90, 10, 6000, COLOR_PRIMARY_DARK},
+            {NULL, 120, 10, 1200, COLOR_SECONDARY}
         };
         artivity_rings_create(self, meter, configs);
 
@@ -145,11 +145,16 @@ static lv_obj_t *artivity_rings_create(screen_card_t *self, lv_obj_t *parent,
             0, configs[i].size / 2);
 
         lv_obj_set_style_opa(configs[i].arc, LV_OPA_TRANSP, LV_PART_KNOB);
-
         lv_obj_set_style_arc_color(configs[i].arc, configs[i].color,
             LV_PART_INDICATOR);
         lv_obj_set_style_arc_width(configs[i].arc, configs[i].width,
             LV_PART_INDICATOR);
+        lv_obj_set_style_arc_width(configs[i].arc, configs[i].width,
+            LV_PART_MAIN);
+        lv_color_t ind_color = configs[i].color;
+        lv_color_t main_color = lv_color_darken(ind_color, LV_OPA_40);
+        lv_obj_set_style_arc_color(configs[i].arc, main_color,
+            LV_PART_MAIN);
 
         lv_arc_set_bg_angles(configs[i].arc, 180, 0);
         lv_arc_set_max_value(configs[i].arc, configs[i].max_value);
@@ -210,6 +215,8 @@ static void arc_boserver_cb(lv_observer_t *obs, lv_subject_t *sub)
     lv_arc_set_value(arc, value);
 }
 
+static void sport_panel_creata(screen_card_t *self, lv_obj_t *parent);
+static void sport_info_create(screen_card_t *self, lv_obj_t *parent);
 /*sport按键回调*/
 static void sport_btn_click_cb(lv_event_t *e)
 {
@@ -218,7 +225,70 @@ static void sport_btn_click_cb(lv_event_t *e)
     lv_obj_add_flag(old_scr, LV_OBJ_FLAG_HIDDEN);
 
     lv_obj_t *new = lv_obj_create(NULL);
-    lv_obj_t *btn = lv_btn_create(new);
+    lv_obj_set_style_pad_all(new, 8, 0);
+    lv_obj_set_size(new, lv_pct(100), lv_pct(100));
+    lv_obj_set_flex_flow(new, LV_FLEX_FLOW_COLUMN);
+
+    sport_panel_creata(self, new);
 
     lv_scr_load(new);
+}
+
+static void sport_panel_creata(screen_card_t *self, lv_obj_t *parent)
+{
+    lv_obj_t *sport_panel = parent;
+
+    lv_obj_t *meter  = lv_obj_create(sport_panel);
+    lv_obj_remove_style_all(meter);
+    lv_obj_set_size(meter, lv_pct(100), lv_pct(45));
+    artivity_rings_t configs[] = {
+        {NULL, 140, 27, 400, COLOR_ERROR},
+        {NULL, 210, 27, 6000, COLOR_PRIMARY_DARK},
+        {NULL, 280, 27, 1200, COLOR_SECONDARY}
+    };
+    artivity_rings_create(self, meter, configs);
+
+    lv_obj_t *info = lv_obj_create(sport_panel);
+    lv_obj_remove_style_all(info);
+    lv_obj_set_size(info, lv_pct(100), lv_pct(50));
+    lv_obj_set_flex_flow(info, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_style_pad_all(info, 8, 0);
+
+    sport_info_create(self, info);
+}
+
+lv_style_t sport_label_style;
+
+static void sport_info_create(screen_card_t *self, lv_obj_t *parent)
+{
+    lv_obj_t *info = parent;
+    label_data_t label[3] = {};
+    size_t num = sizeof(label) / sizeof(label[0]);
+    char *title[] = {"calorie", "steps", "times"};
+
+    lv_style_init(&sport_label_style);
+    lv_style_set_text_font(&sport_label_style,
+        &lv_font_montserrat_28);
+
+    for (size_t i = 0; i < num; i++) {
+        label[i].parent = lv_obj_create(info);
+        lv_obj_remove_style_all(label[i].parent);
+        lv_obj_set_size(label[i].parent, lv_pct(100), lv_pct(30));
+        lv_obj_set_flex_flow(label[i].parent, LV_FLEX_FLOW_ROW);
+        lv_obj_set_flex_align(label[i].parent, LV_FLEX_ALIGN_START,
+            LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
+        lv_obj_add_style(label[i].parent, &sport_label_style, 0);
+
+        label[i].line1 = lv_label_create(label[i].parent);
+        lv_label_set_text(label[i].line1, title[i]);
+        lv_obj_set_flex_grow(label[i].line1, 3);
+        lv_obj_set_style_text_align(label[i].line1, LV_TEXT_ALIGN_CENTER, 0);
+
+        label[i].line2 = lv_label_create(label[i].parent);
+        // lv_label_set_text(label[i].line2, title[i]);
+        lv_obj_set_flex_grow(label[i].line2, 4);
+        lv_label_bind_text(label[i].line2, data[i], "%d");
+        lv_obj_set_style_text_align(label[i].line2, LV_TEXT_ALIGN_CENTER, 0);
+    }
+
 }

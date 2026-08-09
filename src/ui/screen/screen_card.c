@@ -19,11 +19,21 @@ typedef struct artivity_rings {
     lv_color_t color;      /* 指示条颜色 */
 } artivity_rings_t;
 
+/* 数值标签:标签对象 + 满量程,作为 observer user_data 携带 */
+typedef struct label_max {
+    lv_obj_t *label;   /* 数值标签 */
+    int32_t max;       /* 满量程值 */
+} label_max_t;
+
 /* 三个活动圆环各自订阅的数据源 */
 static lv_subject_t *data[] = {
     &g_calorie_subject,
     &g_steps_subject,
     &g_duration_subject};
+
+/* 三个数值标签的满量程值,顺序与 data[] 对应 */
+static const int32_t sport_maxs[] = {400, 6000, 1200};
+static label_max_t sport_max[3];
 
 /* 模块内部构建函数 */
 static void title_create(screen_card_t *self, lv_obj_t *parent);
@@ -36,6 +46,7 @@ static lv_obj_t *label_data_create(lv_obj_t *parent);
 
 static void arc_boserver_cb(lv_observer_t *obs, lv_subject_t *sub);
 static void sport_btn_click_cb(lv_event_t *e);
+static void label_update_cb(lv_observer_t *obs, lv_subject_t *sub);
 
 /* 创建卡片屏幕:标题栏 + 运动数据卡片 */
 void screen_card_create(screen_card_t *self, lv_obj_t *parent)
@@ -285,10 +296,20 @@ static void sport_info_create(screen_card_t *self, lv_obj_t *parent)
         lv_obj_set_style_text_align(label[i].line1, LV_TEXT_ALIGN_CENTER, 0);
 
         label[i].line2 = lv_label_create(label[i].parent);
-        // lv_label_set_text(label[i].line2, title[i]);
         lv_obj_set_flex_grow(label[i].line2, 4);
-        lv_label_bind_text(label[i].line2, data[i], "%d");
         lv_obj_set_style_text_align(label[i].line2, LV_TEXT_ALIGN_CENTER, 0);
+
+        /* value/max 形式:订阅数据源,更新时按 "当前值/满量程" 刷新 */
+        sport_max[i].label = label[i].line2;
+        sport_max[i].max = sport_maxs[i];
+        lv_subject_add_observer(data[i], label_update_cb, &sport_max[i]);
     }
 
+}
+
+static void label_update_cb(lv_observer_t *obs, lv_subject_t *sub)
+{
+    label_max_t *lm = lv_observer_get_user_data(obs);
+    int32_t cur = lv_subject_get_int(sub);
+    lv_label_set_text_fmt(lm->label, "%d/%d", cur, lm->max);
 }

@@ -47,6 +47,8 @@ static lv_obj_t *label_data_create(lv_obj_t *parent);
 static void arc_boserver_cb(lv_observer_t *obs, lv_subject_t *sub);
 static void sport_btn_click_cb(lv_event_t *e);
 static void label_update_cb(lv_observer_t *obs, lv_subject_t *sub);
+static void sport_panel_gesture_cb(lv_event_t *e);
+static void sport_gesture_bubble_all(lv_obj_t *obj);
 
 /* 创建卡片屏幕:标题栏 + 运动数据卡片 */
 void screen_card_create(screen_card_t *self, lv_obj_t *parent)
@@ -109,7 +111,7 @@ static lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent)
     lv_coord_t scr_h = lv_disp_get_ver_res(NULL);
     lv_obj_set_size(sport_card, lv_pct(100), (scr_h * 45 / 100));
     lv_obj_add_event_cb(sport_card, sport_btn_click_cb,
-        LV_EVENT_PRESSED, self);
+        LV_EVENT_CLICKED, self);
     {
         lv_obj_t *meter = lv_btn_create(sport_card);
         lv_obj_clear_flag(meter, LV_OBJ_FLAG_SCROLLABLE);
@@ -171,9 +173,9 @@ static lv_obj_t *artivity_rings_create(screen_card_t *self, lv_obj_t *parent,
         lv_arc_set_max_value(configs[i].arc, configs[i].max_value);
         lv_arc_set_value(configs[i].arc, 0);
 
-        /* 订阅数据变化,订阅句柄存到结构体便于统一移除 */
-        self->arc_obs[i] = lv_subject_add_observer(data[i],
-            arc_boserver_cb, configs[i].arc);
+        /* 绑定对象订阅:arc 删除时 observer 自动移除,避免悬空 */
+        self->arc_obs[i] = lv_subject_add_observer_obj(data[i],
+            arc_boserver_cb, configs[i].arc, NULL);
 
     }
     return parent;
@@ -221,7 +223,7 @@ static lv_obj_t *label_data_create(lv_obj_t *parent)
 /* 圆环数据观察者回调:把 subject 数值写到 arc */
 static void arc_boserver_cb(lv_observer_t *obs, lv_subject_t *sub)
 {
-    lv_obj_t *arc = lv_observer_get_user_data(obs);
+    lv_obj_t *arc = lv_observer_get_target(obs);
     int16_t value = lv_subject_get_int(sub);
     lv_arc_set_value(arc, value);
 }
@@ -231,18 +233,31 @@ static void sport_info_create(screen_card_t *self, lv_obj_t *parent);
 /*sport按键回调*/
 static void sport_btn_click_cb(lv_event_t *e)
 {
-    lv_obj_t *old_scr = lv_scr_act();
     screen_card_t *self = lv_event_get_user_data(e);
+    lv_obj_t *old_scr = lv_scr_act();
     lv_obj_add_flag(old_scr, LV_OBJ_FLAG_HIDDEN);
 
-    lv_obj_t *new = lv_obj_create(NULL);
-    lv_obj_set_style_pad_all(new, 8, 0);
-    lv_obj_set_size(new, lv_pct(100), lv_pct(100));
-    lv_obj_set_flex_flow(new, LV_FLEX_FLOW_COLUMN);
+    if (self->sport_scr == NULL) {
+        /* 首次进入:创建详情页并绑定右滑手势 */
+        lv_obj_t *new = lv_obj_create(NULL);
+        lv_obj_set_style_pad_all(new, 8, 0);
+        lv_obj_set_size(new, lv_pct(100), lv_pct(100));
+        lv_obj_set_flex_flow(new, LV_FLEX_FLOW_COLUMN);
+        lv_obj_set_scrollable(new, false);
 
-    sport_panel_creata(self, new);
+        sport_panel_creata(self, new);
 
-    lv_scr_load(new);
+        self->sport_scr = new;
+        lv_obj_add_event_cb(new, sport_panel_gesture_cb, LV_EVENT_GESTURE, self);
+        sport_gesture_bubble_all(new);
+    }
+    else {
+        /* 复用详情页:取消隐藏即可 */
+        lv_obj_remove_flag(self->sport_scr, LV_OBJ_FLAG_HIDDEN);
+    }
+
+    self->main_scr = old_scr;
+    lv_scr_load(self->sport_scr);
 }
 
 static void sport_panel_creata(screen_card_t *self, lv_obj_t *parent)
@@ -252,6 +267,7 @@ static void sport_panel_creata(screen_card_t *self, lv_obj_t *parent)
     lv_obj_t *meter  = lv_obj_create(sport_panel);
     lv_obj_remove_style_all(meter);
     lv_obj_set_size(meter, lv_pct(100), lv_pct(45));
+    lv_obj_set_scrollable(meter, false);
     artivity_rings_t configs[] = {
         {NULL, 140, 27, 400, COLOR_ERROR},
         {NULL, 210, 27, 6000, COLOR_PRIMARY_DARK},
@@ -299,10 +315,11 @@ static void sport_info_create(screen_card_t *self, lv_obj_t *parent)
         lv_obj_set_flex_grow(label[i].line2, 4);
         lv_obj_set_style_text_align(label[i].line2, LV_TEXT_ALIGN_CENTER, 0);
 
-        /* value/max 形式:订阅数据源,更新时按 "当前值/满量程" 刷新 */
+        /* value/max 形式:绑定对象订阅,label 删除时 observer 自动移除 */
         sport_max[i].label = label[i].line2;
         sport_max[i].max = sport_maxs[i];
-        lv_subject_add_observer(data[i], label_update_cb, &sport_max[i]);
+        lv_subject_add_observer_obj(data[i], label_update_cb,
+            label[i].line2, &sport_max[i]);
     }
 
 }
@@ -312,4 +329,27 @@ static void label_update_cb(lv_observer_t *obs, lv_subject_t *sub)
     label_max_t *lm = lv_observer_get_user_data(obs);
     int32_t cur = lv_subject_get_int(sub);
     lv_label_set_text_fmt(lm->label, "%d/%d", cur, lm->max);
+}
+
+/* 让 obj 的所有子孙手势冒泡到 obj,obj 自身不冒泡以便命中根回调 */
+static void sport_gesture_bubble_all(lv_obj_t *obj)
+{
+    uint32_t cnt = lv_obj_get_child_count(obj);
+    for (uint32_t i = 0; i < cnt; i++) {
+        lv_obj_t *child = lv_obj_get_child(obj, i);
+        lv_obj_set_gesture_bubble(child, true);
+        sport_gesture_bubble_all(child);
+    }
+}
+
+/* 详情页右滑手势:隐藏详情页并恢复主屏显示(不删除,复用) */
+static void sport_panel_gesture_cb(lv_event_t *e)
+{
+    screen_card_t *self = lv_event_get_user_data(e);
+    lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
+    if (dir != LV_DIR_RIGHT) return;
+
+    lv_obj_add_flag(self->sport_scr, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_remove_flag(self->main_scr, LV_OBJ_FLAG_HIDDEN);
+    lv_scr_load(self->main_scr);
 }

@@ -1,10 +1,12 @@
 #include "screen_card.h"
-#include "screen/card/card.h"
+#include "screen/card/sport_card.h"
+#include "screen/card/HRmonitor.h"
 #include "style/app_styles.h"
 #include "core/data_center.h"
 
 /* 标题栏:时间 + 日期,均绑定 subject 自动刷新 */
 static void title_create(screen_card_t *self, lv_obj_t *parent);
+static void card_create(screen_card_t *self, lv_obj_t *parent);
 
 /* 创建卡片屏幕:标题栏 + 运动数据卡片 */
 void screen_card_create(screen_card_t *self, lv_obj_t *parent)
@@ -31,6 +33,13 @@ void screen_card_create(screen_card_t *self, lv_obj_t *parent)
     lv_obj_set_flex_grow(card_panel, 1);
     card_create(self, card_panel);
     lv_obj_set_size(card_panel, lv_pct(100), LV_SIZE_CONTENT);
+}
+
+/* 卡片区入口 */
+static void card_create(screen_card_t *self, lv_obj_t *parent)
+{
+    sport_card_create(self, parent);
+    HRmonitor_card_create(self, parent);
 }
 
 static void title_create(screen_card_t *self, lv_obj_t *parent)

@@ -1,4 +1,4 @@
-#include "card.h"
+#include "sport_card.h"
 #include "style/app_colors.h"
 #include "style/app_styles.h"
 #include "core/data_center.h"
@@ -38,12 +38,11 @@ static label_max_t sport_max[3];
 static lv_style_t sport_label_style;
 
 /* 模块内部构建函数 */
-static lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent);
-static lv_obj_t *artivity_rings_create(screen_card_t *self, lv_obj_t *parent,
-    artivity_rings_t *configs);
 static lv_obj_t *label_data_create(lv_obj_t *parent);
 static void sport_panel_creata(screen_card_t *self, lv_obj_t *parent);
 static void sport_info_create(screen_card_t *self, lv_obj_t *parent);
+static lv_obj_t *artivity_rings_create(screen_card_t *self, lv_obj_t *parent,
+     artivity_rings_t *configs);
 
 static void arc_boserver_cb(lv_observer_t *obs, lv_subject_t *sub);
 static void sport_btn_click_cb(lv_event_t *e);
@@ -51,14 +50,8 @@ static void label_update_cb(lv_observer_t *obs, lv_subject_t *sub);
 static void sport_panel_gesture_cb(lv_event_t *e);
 static void sport_gesture_bubble_all(lv_obj_t *obj);
 
-/* 卡片区入口 */
-void card_create(screen_card_t *self, lv_obj_t *parent)
-{
-    sport_card_create(self, parent);
-}
-
 /* 运动数据卡片:活动圆环 + 下方数值区 */
-static lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent)
+lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent)
 {
     lv_obj_t *sport_card = lv_obj_create(parent);
     lv_obj_set_style_bg_color(sport_card, COLOR_SURFACE, 0);

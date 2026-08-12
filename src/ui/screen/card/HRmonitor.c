@@ -1,18 +1,20 @@
 #include "HRmonitor.h"
 #include "style/app_colors.h"
 #include "screen/screen_card.h"
+#include "core/data_center.h"
 #include "lvgl_private.h"   /* 提供 lv_draw_task_t / lv_chart_t 内部结构 */
 
 /* 区间数据:每根柱子的低值(下限)与高值(上限) */
 #define POINT_NUM 24
-static lv_coord_t low_values[POINT_NUM]  = {60, 65, 73, 59, 58};
-static lv_coord_t high_values[POINT_NUM] = {84, 93, 84, 73, 89};
+static lv_coord_t low_values[POINT_NUM]  = {};
+static lv_coord_t high_values[POINT_NUM] = {};
 static Uint8 value_index = 0;
 
 static void HR_title_create(lv_obj_t *parent);
 static void HR_table_create(lv_obj_t *parent);
 static void HR_btn_click_cb(lv_event_t *e);
 static void chart_draw_event_cb(lv_event_t *e);
+static void HR_observer_cb(lv_observer_t *obs, lv_subject_t *sub);
 
 lv_obj_t *HRmonitor_card_create(screen_card_t *self, lv_obj_t *parent)
 {
@@ -41,17 +43,30 @@ static void HR_title_create(lv_obj_t *parent)
     lv_obj_set_flex_flow(HR_title, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(HR_title, LV_FLEX_ALIGN_START,
         LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_START);
+    lv_obj_remove_flag(HR_title, LV_OBJ_FLAG_SCROLLABLE);
 
     lv_obj_t *HR_label = lv_label_create(HR_title);
-    lv_obj_set_style_text_font(HR_label, &lv_font_montserrat_24, 0);
-    lv_obj_set_flex_grow(HR_label, 2);
+    lv_obj_set_style_text_font(HR_label, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_align(HR_label, LV_TEXT_ALIGN_LEFT, 0);
+    lv_obj_set_flex_grow(HR_label, 3);
     lv_label_set_text(HR_label, "heart rate");
 
-    lv_obj_t *HR_data_label = lv_label_create(HR_title);
-    lv_obj_set_flex_grow(HR_data_label, 3);
-    lv_obj_set_style_text_font(HR_data_label, &lv_font_montserrat_24, 0);
-    lv_obj_set_style_text_align(HR_data_label, LV_TEXT_ALIGN_RIGHT, 0);
-    lv_label_set_text(HR_data_label, "data  data");
+    /* 右侧数据区:当前心率(bpm) + 最近更新时间 */
+    lv_obj_t *HR_data_box = lv_obj_create(HR_title);
+    lv_obj_remove_style_all(HR_data_box);
+    lv_obj_set_flex_grow(HR_data_box, 2);
+    lv_obj_set_flex_flow(HR_data_box, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(HR_data_box, LV_FLEX_ALIGN_START,
+        LV_FLEX_ALIGN_END, LV_FLEX_ALIGN_END);
+
+    lv_obj_t *HR_bpm_label = lv_label_create(HR_data_box);
+    lv_obj_set_style_text_font(HR_bpm_label, &lv_font_montserrat_18, 0);
+    lv_label_bind_text(HR_bpm_label, &g_HR_value_subject, "%d bpm");
+
+    lv_obj_t *HR_time_label = lv_label_create(HR_data_box);
+    lv_obj_set_style_text_font(HR_time_label, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_opa(HR_time_label, LV_OPA_50, 0);
+    lv_label_bind_text(HR_time_label, &g_time_subject, "at %s");
 }
 
 static void HR_table_create(lv_obj_t *parent)
@@ -76,10 +91,14 @@ static void HR_table_create(lv_obj_t *parent)
 
     /* 柱子圆角置 0,避免区间很小时圆角吃掉整根柱子 */
     lv_obj_set_style_radius(chart, 0, LV_PART_ITEMS);
+    lv_obj_set_style_border_width(chart, 0, 0);
 
     lv_obj_set_send_draw_task_events(chart, true);
     lv_obj_add_event_cb(chart, chart_draw_event_cb,
         LV_EVENT_DRAW_TASK_ADDED, NULL);
+    /* 订阅心率区间:data_center 每次采样先发 low 再发 high,回调据此写入同一柱 */
+    lv_subject_add_observer(&g_HR_low_subject, HR_observer_cb, chart);
+    lv_subject_add_observer(&g_HR_high_subject, HR_observer_cb, chart);
 
     lv_chart_refresh(chart);
 }
@@ -120,5 +139,22 @@ static void chart_draw_event_cb(lv_event_t *e)
     /* 覆盖默认柱子区域:上边界为高值,下边界为低值,实现区间显示 */
     task->area.y1 = y_high;
     task->area.y2 = y_low;
+
 }
 
+static void HR_observer_cb(lv_observer_t *obs, lv_subject_t *sub)
+{
+    lv_obj_t *chart = lv_observer_get_user_data(obs);
+    int16_t new_value = lv_subject_get_int(sub);
+
+    if (sub == &g_HR_high_subject) {
+        high_values[value_index] = new_value;
+        /* 一次采样的 high/low 写入同一根柱子,high 最后到达负责推进下标 */
+        value_index = (value_index + 1) % POINT_NUM;
+    }
+    else {
+        low_values[value_index] = new_value;
+    }
+
+    lv_chart_refresh(chart);
+}

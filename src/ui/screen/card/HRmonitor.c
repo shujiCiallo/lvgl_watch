@@ -20,6 +20,7 @@ lv_obj_t *HRmonitor_card_create(screen_card_t *self, lv_obj_t *parent)
 {
     lv_obj_t *HR_card = lv_obj_create(parent);
     lv_obj_set_style_bg_color(HR_card, COLOR_SURFACE, 0);
+    lv_obj_set_style_pad_all(HR_card, 5, 0);
     lv_obj_set_flex_flow(HR_card, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(HR_card, LV_FLEX_ALIGN_START,
         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
@@ -31,6 +32,23 @@ lv_obj_t *HRmonitor_card_create(screen_card_t *self, lv_obj_t *parent)
 
     HR_table_create(HR_card);
 
+    lv_obj_t *HR_time = lv_obj_create(HR_card);
+    lv_obj_remove_style_all(HR_time);
+    lv_obj_set_width(HR_time, lv_pct(100));
+    lv_obj_set_flex_grow(HR_time, 1);
+    lv_obj_set_flex_flow(HR_time, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(HR_time, LV_FLEX_ALIGN_SPACE_BETWEEN, 
+        LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_remove_flag(HR_time, LV_OBJ_FLAG_SCROLLABLE);
+    
+    lv_obj_t *_00 = lv_label_create(HR_time);
+    lv_obj_set_width(_00, lv_pct(25));
+    lv_obj_set_style_bg_color(_00, COLOR_ERROR, 0);
+    lv_label_set_text(_00, "00:00");
+    lv_obj_t *_24 = lv_label_create(HR_time);
+    lv_obj_set_width(_24, lv_pct(25));
+    lv_label_set_text(_24, "24:00");
+
     return HR_card;
 }
 
@@ -39,7 +57,7 @@ static void HR_title_create(lv_obj_t *parent)
     lv_obj_t *HR_title = lv_obj_create(parent);
     lv_obj_remove_style_all(HR_title);
     lv_obj_set_width(HR_title, lv_pct(100));
-    lv_obj_set_flex_grow(HR_title, 1);
+    lv_obj_set_flex_grow(HR_title, 2);
     lv_obj_set_flex_flow(HR_title, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(HR_title, LV_FLEX_ALIGN_START,
         LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_START);
@@ -73,12 +91,19 @@ static void HR_table_create(lv_obj_t *parent)
 {
     lv_obj_t *obj = lv_obj_create(parent);
     lv_obj_remove_style_all(obj);
-    lv_obj_set_size(obj, lv_pct(100), lv_pct(100));
-    lv_obj_set_flex_grow(obj, 3);
+    // lv_obj_set_size(obj, lv_pct(100), lv_pct(100));
+    lv_obj_set_width(obj, lv_pct(100));
+    lv_obj_set_flex_grow(obj, 4);
+    lv_obj_set_flex_flow(obj, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(obj, LV_FLEX_ALIGN_CENTER,
+        LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
 
     lv_obj_t *chart = lv_chart_create(obj);
-    lv_obj_set_size(chart, lv_pct(100), lv_pct(100));
-    lv_obj_center(chart);
+    // lv_obj_set_size(chart, lv_pct(100), lv_pct(90));
+    lv_obj_set_height(chart, lv_pct(100));
+    // lv_obj_center(chart);
+    lv_obj_set_flex_grow(chart, 7);
+
 
     lv_chart_set_type(chart, LV_CHART_TYPE_BAR);
     lv_chart_set_point_count(chart, POINT_NUM);
@@ -101,6 +126,22 @@ static void HR_table_create(lv_obj_t *parent)
     lv_subject_add_observer(&g_HR_high_subject, HR_observer_cb, chart);
 
     lv_chart_refresh(chart);
+
+    lv_obj_t *range_data = lv_obj_create(obj);
+    lv_obj_remove_style_all(range_data);
+    lv_obj_set_flex_grow(range_data, 1);
+    lv_obj_set_style_pad_all(range_data, 2, 0);
+    lv_obj_set_height(range_data, lv_pct(100));
+    lv_obj_set_flex_flow(range_data, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(range_data, LV_FLEX_ALIGN_SPACE_BETWEEN, 
+        LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+
+    lv_obj_t *range_high = lv_label_create(range_data);
+    // lv_obj_set_height(range_high, lv_pct(20));
+    lv_label_set_text(range_high, "100");
+    lv_obj_t *range_low = lv_label_create(range_data);
+    // lv_obj_set_height(range_low, lv_pct(20));
+    lv_label_set_text(range_low, "50");
 }
 
 /* 预留:点击卡片进入心率详情 */

@@ -6,6 +6,7 @@
 
 /* 区间数据:每根柱子的低值(下限)与高值(上限) */
 #define POINT_NUM 24
+#define HR_AXIS_PADDING 5   /* Y 轴范围在24h极值上下的边距,避免柱子贴边 */
 static lv_coord_t low_values[POINT_NUM]  = {};
 static lv_coord_t high_values[POINT_NUM] = {};
 static Uint8 value_index = 0;
@@ -15,6 +16,7 @@ static void HR_table_create(lv_obj_t *parent);
 static void HR_btn_click_cb(lv_event_t *e);
 static void chart_draw_event_cb(lv_event_t *e);
 static void HR_observer_cb(lv_observer_t *obs, lv_subject_t *sub);
+static void HR_range_observer_cb(lv_observer_t *obs, lv_subject_t *sub);
 
 lv_obj_t *HRmonitor_card_create(screen_card_t *self, lv_obj_t *parent)
 {
@@ -124,6 +126,9 @@ static void HR_table_create(lv_obj_t *parent)
     /* 订阅心率区间:data_center 每次采样先发 low 再发 high,回调据此写入同一柱 */
     lv_subject_add_observer(&g_HR_low_subject, HR_observer_cb, chart);
     lv_subject_add_observer(&g_HR_high_subject, HR_observer_cb, chart);
+    /* 订阅24h极值:同步更新 Y 轴范围 */
+    lv_subject_add_observer(&g_HR_min24_subject, HR_range_observer_cb, chart);
+    lv_subject_add_observer(&g_HR_max24_subject, HR_range_observer_cb, chart);
 
     lv_chart_refresh(chart);
 
@@ -137,11 +142,12 @@ static void HR_table_create(lv_obj_t *parent)
         LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
 
     lv_obj_t *range_high = lv_label_create(range_data);
-    // lv_obj_set_height(range_high, lv_pct(20));
-    lv_label_set_text(range_high, "100");
+    lv_label_bind_text(range_high, &g_HR_max24_subject, "%d");
     lv_obj_t *range_low = lv_label_create(range_data);
-    // lv_obj_set_height(range_low, lv_pct(20));
-    lv_label_set_text(range_low, "50");
+    lv_label_bind_text(range_low, &g_HR_min24_subject, "%d");
+
+    /* chart 创建时立即获取一次心率,画出第一根柱并初始化24h极值 */
+    data_center_hr_sample();
 }
 
 /* 预留:点击卡片进入心率详情 */
@@ -197,5 +203,20 @@ static void HR_observer_cb(lv_observer_t *obs, lv_subject_t *sub)
         low_values[value_index] = new_value;
     }
 
+    lv_chart_refresh(chart);
+}
+
+/* 24h极值观察者回调:同步 chart Y 轴范围为 [min24-pad, max24+pad] */
+static void HR_range_observer_cb(lv_observer_t *obs, lv_subject_t *sub)
+{
+    (void)sub;
+    lv_obj_t *chart = lv_observer_get_user_data(obs);
+    int32_t max24 = lv_subject_get_int(&g_HR_max24_subject);
+    int32_t min24 = lv_subject_get_int(&g_HR_min24_subject);
+    if (max24 == 0) return;   /* 尚无24h极值,保持默认轴范围 */
+
+    lv_coord_t y_min = min24 - HR_AXIS_PADDING;
+    if (y_min < 0) y_min = 0;
+    lv_chart_set_axis_range(chart, LV_CHART_AXIS_PRIMARY_Y, y_min, max24 + HR_AXIS_PADDING);
     lv_chart_refresh(chart);
 }

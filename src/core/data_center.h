@@ -16,7 +16,10 @@ extern lv_subject_t g_duration_subject;
 extern lv_subject_t g_HR_value_subject;   /* 最近一次检测到的心率(bpm) */
 extern lv_subject_t g_HR_high_subject;
 extern lv_subject_t g_HR_low_subject;
+extern lv_subject_t g_HR_max24_subject;   /* 过去24小时内心率最大值 */
+extern lv_subject_t g_HR_min24_subject;   /* 过去24小时内心率最小值 */
 
 void data_center_init(void);
+void data_center_hr_sample(void);   /* 立即采样一次心率,chart 创建时调用 */
 
 #endif

@@ -11,6 +11,9 @@ static void time_panel_create(lv_obj_t *parent);
 static void calorie_panel_create(lv_obj_t *parent);
 static void info_panel_create(lv_obj_t *parent);
 
+/* 卡路里 slider 数据观察者回调 */
+static void calorie_slider_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
+
 /* 创建主屏幕(表盘):背景样式 + 时间/音乐/信息 三个面板 */
 void screen_main_create(screen_main_t *self, lv_obj_t *parent)
 {
@@ -50,6 +53,9 @@ static void calorie_panel_create(lv_obj_t *parent)
     lv_obj_set_width(calorie_panel, lv_pct(100));
     lv_obj_set_style_bg_color(calorie_panel, COLOR_SURFACE, 0);
     lv_obj_set_style_pad_all(calorie_panel, 8, 0);
+    /* 点击进入运动详情页:与 sport_card 点击行为一致 */
+    lv_obj_add_event_cb(calorie_panel, sport_btn_click_cb,
+        LV_EVENT_CLICKED, sport_card_inst());
 
     lv_obj_t *label_top = lv_obj_create(calorie_panel);
     lv_obj_remove_style_all(label_top);
@@ -60,7 +66,7 @@ static void calorie_panel_create(lv_obj_t *parent)
         LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     {
         lv_obj_t *label_life = lv_label_create(label_top);
-        lv_label_set_text(label_life, "0/kcal");
+        lv_label_bind_text(label_life, &g_calorie_subject, "%d/kCal");
 
         lv_obj_t *label_right = lv_label_create(label_top);
         lv_obj_set_style_text_align(label_right, LV_TEXT_ALIGN_RIGHT, 0);
@@ -73,6 +79,16 @@ static void calorie_panel_create(lv_obj_t *parent)
     lv_obj_set_style_opa(slider, LV_OPA_TRANSP, LV_PART_KNOB);
     lv_obj_set_style_radius(slider, 4, LV_PART_MAIN);
     lv_obj_set_style_radius(slider, 4, LV_PART_INDICATOR);
+    /* 与 sport_card 卡路里圆环同款红色:指示器纯红,背景加深红 */
+    lv_obj_set_style_bg_color(slider, lv_color_darken(COLOR_ERROR, LV_OPA_40),
+        LV_PART_MAIN);
+    lv_obj_set_style_bg_color(slider, COLOR_ERROR, LV_PART_INDICATOR);
+    /* 禁止鼠标滑动:slider 仅作进度展示 */
+    lv_obj_clear_flag(slider, LV_OBJ_FLAG_CLICKABLE);
+    /* 满量程与数据层保持一致,数值与卡路里实时同步 */
+    lv_slider_set_range(slider, 0, CALORIE_MAX);
+    lv_subject_add_observer_obj(&g_calorie_subject, calorie_slider_obs_cb,
+        slider, NULL);
 
     lv_obj_t *label_time = lv_obj_create(calorie_panel);
     lv_obj_remove_style_all(label_time);
@@ -90,6 +106,13 @@ static void calorie_panel_create(lv_obj_t *parent)
         lv_obj_set_style_text_align(_24, LV_TEXT_ALIGN_RIGHT, 0);
         lv_label_set_text(_24, "24");
     }
+}
+
+/* 卡路里更新时同步滑块位置 */
+static void calorie_slider_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
+{
+    lv_obj_t *slider = lv_observer_get_target(obs);
+    lv_slider_set_value(slider, lv_subject_get_int(sub), LV_ANIM_OFF);
 }
 
 /* 信息面板:SD卡/定位/电量 三个状态按钮 */

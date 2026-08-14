@@ -9,10 +9,16 @@ lv_obj_t *g_tileview;
 int g_tile_index;   /* 预留:当前所在 tile 的索引,暂未使用 */
 
 /* 各屏幕运行时状态(模块内单例),传给对应屏的 create 接口 */
-static screen_main_t   s_main;
-static screen_tools_t  s_tools;
-static screen_card_t   s_card;
-static screen_app_t    s_app;
+static screen_main_t     s_main;
+static screen_tools_t    s_tools;
+static screen_card_t     s_sport_card;
+static screen_app_t      s_app;
+
+/* 运动卡片屏幕单例访问:event 与各界面点击共用 */
+screen_card_t *sport_card_inst(void)
+{
+    return &s_sport_card;
+}
 
 static void tileview_event_cb(lv_event_t *e);
 
@@ -33,7 +39,7 @@ void screen_tileview_create(lv_obj_t *parent)
     /* 各屏状态写入结构体实例,不再依赖屏内静态全局 */
     screen_tools_create(&s_tools, tool_panel);
     screen_app_create(&s_app, app_panel);
-    screen_card_create(&s_card, card_panel);
+    screen_card_create(&s_sport_card, card_panel);
     screen_main_create(&s_main, home_panel);
     lv_tileview_set_tile(g_tileview, home_panel, LV_ANIM_OFF);
 }

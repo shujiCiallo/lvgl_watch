@@ -1,4 +1,5 @@
 #include "sport_card.h"
+#include "event/event.h"
 #include "style/app_colors.h"
 #include "style/app_styles.h"
 #include "core/data_center.h"
@@ -32,7 +33,7 @@ static lv_subject_t *data[] = {
     &g_duration_subject};
 
 /* 三个数值标签的满量程值,顺序与 data[] 对应 */
-static const int32_t sport_maxs[] = {400, 6000, 1200};
+static const int32_t sport_maxs[] = {CALORIE_MAX, 6000, 1200};
 static label_max_t sport_max[3];
 
 static lv_style_t sport_label_style;
@@ -45,10 +46,7 @@ static lv_obj_t *artivity_rings_create(screen_card_t *self, lv_obj_t *parent,
      artivity_rings_t *configs);
 
 static void arc_boserver_cb(lv_observer_t *obs, lv_subject_t *sub);
-static void sport_btn_click_cb(lv_event_t *e);
 static void label_update_cb(lv_observer_t *obs, lv_subject_t *sub);
-static void sport_panel_gesture_cb(lv_event_t *e);
-static void sport_gesture_bubble_all(lv_obj_t *obj);
 
 /* 运动数据卡片:活动圆环 + 下方数值区 */
 lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent)
@@ -69,7 +67,7 @@ lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent)
         lv_obj_add_flag(meter, LV_OBJ_FLAG_EVENT_BUBBLE);
         lv_obj_set_flex_grow(meter, 1);
         artivity_rings_t configs[] = {
-            {NULL, 60, 10, 400, COLOR_ERROR},
+            {NULL, 60, 10, CALORIE_MAX, COLOR_ERROR},
             {NULL, 90, 10, 6000, COLOR_PRIMARY_DARK},
             {NULL, 120, 10, 1200, COLOR_SECONDARY}
         };
@@ -178,36 +176,6 @@ static void arc_boserver_cb(lv_observer_t *obs, lv_subject_t *sub)
     lv_arc_set_value(arc, value);
 }
 
-/*sport按键回调*/
-static void sport_btn_click_cb(lv_event_t *e)
-{
-    screen_card_t *self = lv_event_get_user_data(e);
-    lv_obj_t *old_scr = lv_scr_act();
-    lv_obj_add_flag(old_scr, LV_OBJ_FLAG_HIDDEN);
-
-    if (self->sport_scr == NULL) {
-        /* 首次进入:创建详情页并绑定右滑手势 */
-        lv_obj_t *new = lv_obj_create(NULL);
-        lv_obj_set_style_pad_all(new, 8, 0);
-        lv_obj_set_size(new, lv_pct(100), lv_pct(100));
-        lv_obj_set_flex_flow(new, LV_FLEX_FLOW_COLUMN);
-        lv_obj_set_scrollable(new, false);
-
-        sport_panel_creata(self, new);
-
-        self->sport_scr = new;
-        lv_obj_add_event_cb(new, sport_panel_gesture_cb, LV_EVENT_GESTURE, self);
-        sport_gesture_bubble_all(new);
-    }
-    else {
-        /* 复用详情页:取消隐藏即可 */
-        lv_obj_remove_flag(self->sport_scr, LV_OBJ_FLAG_HIDDEN);
-    }
-
-    self->main_scr = old_scr;
-    lv_scr_load(self->sport_scr);
-}
-
 void sport_panel_creata(screen_card_t *self, lv_obj_t *parent)
 {
     lv_obj_t *sport_panel = parent;
@@ -217,7 +185,7 @@ void sport_panel_creata(screen_card_t *self, lv_obj_t *parent)
     lv_obj_set_size(meter, lv_pct(100), lv_pct(45));
     lv_obj_set_scrollable(meter, false);
     artivity_rings_t configs[] = {
-        {NULL, 140, 27, 400, COLOR_ERROR},
+        {NULL, 140, 27, CALORIE_MAX, COLOR_ERROR},
         {NULL, 210, 27, 6000, COLOR_PRIMARY_DARK},
         {NULL, 280, 27, 1200, COLOR_SECONDARY}
     };
@@ -277,25 +245,3 @@ static void label_update_cb(lv_observer_t *obs, lv_subject_t *sub)
     lv_label_set_text_fmt(lm->label, "%d/%d", cur, lm->max);
 }
 
-/* 让 obj 的所有子孙手势冒泡到 obj,obj 自身不冒泡以便命中根回调 */
-static void sport_gesture_bubble_all(lv_obj_t *obj)
-{
-    uint32_t cnt = lv_obj_get_child_count(obj);
-    for (uint32_t i = 0; i < cnt; i++) {
-        lv_obj_t *child = lv_obj_get_child(obj, i);
-        lv_obj_set_gesture_bubble(child, true);
-        sport_gesture_bubble_all(child);
-    }
-}
-
-/* 详情页右滑手势:隐藏详情页并恢复主屏显示(不删除,复用) */
-static void sport_panel_gesture_cb(lv_event_t *e)
-{
-    screen_card_t *self = lv_event_get_user_data(e);
-    lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
-    if (dir != LV_DIR_RIGHT) return;
-
-    lv_obj_add_flag(self->sport_scr, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_remove_flag(self->main_scr, LV_OBJ_FLAG_HIDDEN);
-    lv_scr_load(self->main_scr);
-}

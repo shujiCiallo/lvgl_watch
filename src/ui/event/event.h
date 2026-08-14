@@ -1,18 +1,13 @@
 #ifndef __EVENT_H
 #define __EVENT_H
 
-#include <time.h>
+#include "lvgl.h"
+#include "screen/screen_card.h"
 
-/* 事件处理模块。
- * 目前暂无启用的事件逻辑;时间/日期的周期刷新已迁移到
- * core/data_center 的 subject 机制,事件回调后续在此扩展。 */
+/* 通用事件处理模块。
+ * sport 详情页的打开/关闭逻辑集中于此,供各界面点击复用。 */
 
-/* 以下为历史实现参考,已由 subject 方案替代:
-// extern time_t current_time;
-// extern struct tm *local_time;
-// extern char time_buf[24];
-
-// void time_cb(lv_timer_t *time);
-*/
+/* 点击打开运动详情页:注册到任意可点击控件,user_data 传 screen_card_t* */
+void sport_btn_click_cb(lv_event_t *e);
 
 #endif

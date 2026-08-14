@@ -5,5 +5,6 @@
 
 /* 创建运动卡片区域:卡片 + 运动详情页,状态写入 self,控件挂在 parent 下 */
 lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent);
+void sport_panel_creata(screen_card_t *self, lv_obj_t *parent);
 
 #endif

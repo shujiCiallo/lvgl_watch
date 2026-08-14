@@ -39,7 +39,7 @@ static lv_style_t sport_label_style;
 
 /* 模块内部构建函数 */
 static lv_obj_t *label_data_create(lv_obj_t *parent);
-static void sport_panel_creata(screen_card_t *self, lv_obj_t *parent);
+// static void sport_panel_creata(screen_card_t *self, lv_obj_t *parent);
 static void sport_info_create(screen_card_t *self, lv_obj_t *parent);
 static lv_obj_t *artivity_rings_create(screen_card_t *self, lv_obj_t *parent,
      artivity_rings_t *configs);
@@ -208,7 +208,7 @@ static void sport_btn_click_cb(lv_event_t *e)
     lv_scr_load(self->sport_scr);
 }
 
-static void sport_panel_creata(screen_card_t *self, lv_obj_t *parent)
+void sport_panel_creata(screen_card_t *self, lv_obj_t *parent)
 {
     lv_obj_t *sport_panel = parent;
 

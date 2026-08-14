@@ -2,24 +2,26 @@
 #include "lvgl/lvgl.h"
 #include "event/event.h"
 #include "style/app_styles.h"
+#include "style/app_colors.h"
 #include "screen/screen_manager.h"
 #include "core/data_center.h"
 
 /* 各面板构建函数,只在模块内部使用 */
 static void time_panel_create(lv_obj_t *parent);
-static void music_panel_create(lv_obj_t *parent);
+static void calorie_panel_create(lv_obj_t *parent);
 static void info_panel_create(lv_obj_t *parent);
 
 /* 创建主屏幕(表盘):背景样式 + 时间/音乐/信息 三个面板 */
 void screen_main_create(screen_main_t *self, lv_obj_t *parent)
 {
     self->root = parent;   /* 保存根对象到结构体,替代全局静态变量 */
+    // lv_obj_remove_style_all(self->root);
     lv_obj_add_style(self->root, &style_screen_bg, 0);
     lv_obj_set_flex_flow(self->root, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_size(self->root, lv_pct(100), lv_pct(100));
 
     time_panel_create(self->root);
-    music_panel_create(self->root);
+    calorie_panel_create(self->root);
     info_panel_create(self->root);
 }
 
@@ -28,7 +30,9 @@ static void time_panel_create(lv_obj_t *parent)
 {
     lv_obj_t *time_panel = lv_obj_create(parent);
     lv_obj_set_align(time_panel, LV_ALIGN_TOP_MID);
-    lv_obj_set_size(time_panel, lv_pct(100), lv_pct(40));
+    lv_obj_set_flex_grow(time_panel, 4);
+    // lv_obj_set_size(time_panel, lv_pct(100), lv_pct(40));
+    lv_obj_set_width(time_panel, lv_pct(100));
     {
         lv_obj_t *time_label = lv_label_create(time_panel);
         lv_obj_center(time_label);
@@ -38,37 +42,53 @@ static void time_panel_create(lv_obj_t *parent)
     }
 }
 
-/* 音乐面板:上一首/播放/下一首 三个按钮 */
-static void music_panel_create(lv_obj_t *parent)
+static void calorie_panel_create(lv_obj_t *parent)
 {
-    static lv_style_t music_style;   /* 音乐按钮文本样式,仅本函数使用 */
+    lv_obj_t *calorie_panel = lv_obj_create(parent);
+    lv_obj_set_flex_flow(calorie_panel, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_grow(calorie_panel, 3);
+    lv_obj_set_width(calorie_panel, lv_pct(100));
+    lv_obj_set_style_bg_color(calorie_panel, COLOR_SURFACE, 0);
+    lv_obj_set_style_pad_all(calorie_panel, 8, 0);
 
-    lv_obj_t *music_panel = lv_obj_create(parent);
-    lv_obj_set_size(music_panel, lv_pct(100), lv_pct(35));
-    lv_obj_set_flex_flow(music_panel, LV_FLEX_FLOW_ROW);
-    lv_obj_set_flex_align(music_panel,
-                      LV_FLEX_ALIGN_START,
-                      LV_FLEX_ALIGN_CENTER,
-                      LV_FLEX_ALIGN_START);
+    lv_obj_t *label_top = lv_obj_create(calorie_panel);
+    lv_obj_remove_style_all(label_top);
+    lv_obj_set_width(label_top, lv_pct(100));
+    lv_obj_set_flex_grow(label_top, 1);
+    lv_obj_set_flex_flow(label_top, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(label_top, LV_FLEX_ALIGN_SPACE_BETWEEN, 
+        LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    {
+        lv_obj_t *label_life = lv_label_create(label_top);
+        lv_label_set_text(label_life, "0/kcal");
 
-    lv_style_init(&music_style);
-    lv_style_set_text_font(&music_style, &lv_font_montserrat_36);
+        lv_obj_t *label_right = lv_label_create(label_top);
+        lv_obj_set_style_text_align(label_right, LV_TEXT_ALIGN_RIGHT, 0);
+        lv_label_set_text(label_right, "calorie");
+    }
 
-    /* 用 Button_t 配置数组批量创建按钮 */
-    Button_t music_button[] = {
-        {NULL, NULL, LV_SYMBOL_PREV},
-        {NULL, NULL, LV_SYMBOL_PLAY},
-        {NULL, NULL, LV_SYMBOL_NEXT}
-    };
-    size_t num = sizeof(music_button) / sizeof(music_button[0]);
-    for (size_t i = 0; i < num; i++){
-        music_button[i].btn = lv_btn_create(music_panel);
-        music_button[i].label = lv_label_create(music_button[i].btn);
-        lv_obj_set_height(music_button[i].btn, lv_pct(100));
-        lv_obj_add_style(music_button[i].btn, &music_style, 0);
-        lv_obj_set_flex_grow(music_button[i].btn, 1);
-        lv_label_set_text(music_button[i].label, music_button[i].text);
-        lv_obj_center(music_button[i].label);
+    lv_obj_t *slider = lv_slider_create(calorie_panel);
+    lv_obj_set_width(slider, lv_pct(100));
+    lv_obj_set_flex_grow(slider, 3);
+    lv_obj_set_style_opa(slider, LV_OPA_TRANSP, LV_PART_KNOB);
+    lv_obj_set_style_radius(slider, 4, LV_PART_MAIN);
+    lv_obj_set_style_radius(slider, 4, LV_PART_INDICATOR);
+
+    lv_obj_t *label_time = lv_obj_create(calorie_panel);
+    lv_obj_remove_style_all(label_time);
+    lv_obj_set_width(label_time, lv_pct(100));
+    lv_obj_set_flex_grow(label_time, 1);
+    lv_obj_set_flex_flow(label_time, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(label_time, LV_FLEX_ALIGN_SPACE_BETWEEN, 
+        LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    {
+        lv_obj_t *_00 = lv_label_create(label_time);
+        lv_obj_set_style_opa(_00, LV_OPA_50, 0);
+        lv_label_set_text(_00, "0");
+        lv_obj_t *_24 = lv_label_create(label_time);
+        lv_obj_set_style_opa(_24, LV_OPA_50, 0);
+        lv_obj_set_style_text_align(_24, LV_TEXT_ALIGN_RIGHT, 0);
+        lv_label_set_text(_24, "24");
     }
 }
 
@@ -76,7 +96,8 @@ static void music_panel_create(lv_obj_t *parent)
 static void info_panel_create(lv_obj_t *parent)
 {
     lv_obj_t *info_panel = lv_obj_create(parent);
-    lv_obj_set_size(info_panel, lv_pct(100), lv_pct(25));
+    lv_obj_set_width(info_panel, lv_pct(100));
+    lv_obj_set_flex_grow(info_panel, 3);
     lv_obj_set_flex_flow(info_panel, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(info_panel,
                       LV_FLEX_ALIGN_START,

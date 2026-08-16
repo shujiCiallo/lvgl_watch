@@ -97,13 +97,13 @@ static void bat_observer_cb(lv_observer_t *obs,
 {
     uint8_t bat = lv_subject_get_int(&g_bat_subject);
     const char *symbol_bat;
-    if (bat >= 75) {
+    if (bat >= 100) {
         symbol_bat =  LV_SYMBOL_BATTERY_FULL;
-    } else if (bat < 75 && bat >= 50) {
+    } else if (bat >= 64) {
         symbol_bat =  LV_SYMBOL_BATTERY_3;
-    } else if (bat < 50 && bat >= 25) {
+    } else if (bat >= 34) {
         symbol_bat =  LV_SYMBOL_BATTERY_2;
-    } else if (bat < 25) {
+    } else {
         symbol_bat =  LV_SYMBOL_BATTERY_1;
     }
 

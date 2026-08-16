@@ -17,6 +17,12 @@ static void info_panel_create(lv_obj_t *parent);
 /* 卡路里 slider 数据观察者回调 */
 static void calorie_slider_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
 
+/* 电量图标分级函数 */
+static const char *bat_symbol_get(uint8_t bat);
+
+/* 电量图标观察者回调 */
+static void bat_icon_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
+
 /* 创建主屏幕(表盘):背景样式 + 时间/音乐/信息 三个面板 */
 void screen_main_create(screen_main_t *self, lv_obj_t *parent)
 {
@@ -147,6 +153,7 @@ static void info_panel_create(lv_obj_t *parent)
         lv_obj_center(compass_label);
 
         lv_obj_t *BAT = lv_obj_create(info_panel);
+        lv_obj_set_style_pad_all(BAT, 4, 0);
         lv_obj_set_flex_grow(BAT, 1);
         lv_obj_set_height(BAT, lv_pct(100));
         {
@@ -155,8 +162,19 @@ static void info_panel_create(lv_obj_t *parent)
             lv_obj_add_style(BAT_label, &info_style, 0);
             lv_obj_center(BAT_label);
             lv_obj_set_scrollbar_mode(BAT, LV_SCROLLBAR_MODE_OFF);
+            /* 电量数值由 g_bat_subject 驱动 */
+            lv_label_bind_text(BAT_label, &g_bat_subject, "%d");
 
             BAT_arc_create(BAT);
+
+            /* 电量图标:位于 BAT 正下方,分级规则与 core 一致 */
+            lv_obj_t *BAT_icon_label = lv_label_create(BAT);
+            lv_obj_add_style(BAT_icon_label, &info_style, 0);
+            lv_obj_set_align(BAT_icon_label, LV_ALIGN_BOTTOM_MID);
+            lv_label_set_text(BAT_icon_label,
+                bat_symbol_get(lv_subject_get_int(&g_bat_subject)));
+            lv_subject_add_observer(&g_bat_subject, bat_icon_obs_cb,
+                BAT_icon_label);
         }
     }
 }
@@ -165,8 +183,34 @@ typedef struct
 {
     lv_obj_t *arc[3];
     int16_t seg_start_angle[3];
+    int16_t seg_min[3];   /* 每段弧对应的电量最小值 */
+    int16_t seg_max[3];   /* 每段弧对应的电量最大值 */
 }bat_arc_t;
-static bat_arc_t bat_arc_ring;
+/* 三段电量区间:低 / 中 / 高 */
+static bat_arc_t bat_arc_ring = {
+    .seg_min = {0, 34, 64},
+    .seg_max = {33, 63, 100},
+};
+
+/* 按电量刷新三段弧环:每段 value = 电量在该区间的偏移 */
+static void bat_arc_sync(int16_t bat)
+{
+    for (size_t i = 0; i < 3; i++)
+    {
+        int16_t seg_len = bat_arc_ring.seg_max[i] - bat_arc_ring.seg_min[i];
+        int16_t value = bat - bat_arc_ring.seg_min[i];
+        if (value < 0) value = 0;
+        if (value > seg_len) value = seg_len;
+        lv_arc_set_value(bat_arc_ring.arc[i], value);
+    }
+}
+
+/* 电量 subject 观察者:变化时同步弧环 */
+static void bat_arc_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
+{
+    bat_arc_sync(lv_subject_get_int(sub));
+}
+
 static void BAT_arc_create(lv_obj_t *parent)
 {
     lv_obj_t *obj = parent;
@@ -178,7 +222,7 @@ static void BAT_arc_create(lv_obj_t *parent)
     for (size_t i = 0; i < 3; i++)
     {
         bat_arc_ring.arc[i] = lv_arc_create(obj);
-        lv_obj_set_size(bat_arc_ring.arc[i], lv_pct(160), lv_pct(160));
+        lv_obj_set_size(bat_arc_ring.arc[i], lv_pct(100), lv_pct(100));
         lv_obj_center(bat_arc_ring.arc[i]);
         lv_arc_set_bg_angles(bat_arc_ring.arc[i], 
             bat_arc_ring.seg_start_angle[i], 
@@ -186,9 +230,29 @@ static void BAT_arc_create(lv_obj_t *parent)
         lv_obj_set_style_arc_width(bat_arc_ring.arc[i], 4, LV_PART_INDICATOR);
         lv_obj_set_style_arc_width(bat_arc_ring.arc[i], 4, LV_PART_MAIN);
         lv_obj_remove_style(bat_arc_ring.arc[i], NULL, LV_PART_KNOB);
-        lv_arc_set_value(bat_arc_ring.arc[i], 25);
-        lv_arc_set_max_value(bat_arc_ring.arc[i], 25);
+        /* 每段弧 value 范围 = 该段电量区间长度 */
+        lv_arc_set_range(bat_arc_ring.arc[i], 0,
+            bat_arc_ring.seg_max[i] - bat_arc_ring.seg_min[i]);
+        lv_arc_set_value(bat_arc_ring.arc[i], 0);
     }
 
-    
+    /* 绑定电量 subject,并立即同步一次当前电量 */
+    lv_subject_add_observer(&g_bat_subject, bat_arc_obs_cb, NULL);
+    bat_arc_sync(lv_subject_get_int(&g_bat_subject));
+}
+
+/* 电量图标分级:与 core(screen_tools 标题栏)保持同一规则 */
+static const char *bat_symbol_get(uint8_t bat)
+{
+    if (bat >= 100) return LV_SYMBOL_BATTERY_FULL;   /* 100 满格 */
+    if (bat >= 64)  return LV_SYMBOL_BATTERY_3;      /* 64-99 三格 */
+    if (bat >= 34)  return LV_SYMBOL_BATTERY_2;      /* 34-63 两格 */
+    return LV_SYMBOL_BATTERY_1;                       /* 0-33 一格 */
+}
+
+/* 电量变化时刷新图标 */
+static void bat_icon_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
+{
+    lv_obj_t *label = lv_observer_get_user_data(obs);
+    lv_label_set_text(label, bat_symbol_get(lv_subject_get_int(sub)));
 }

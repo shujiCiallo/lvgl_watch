@@ -38,6 +38,7 @@ int main(int argc, char **argv)
 
   /* 初始化 SDL 显示与输入设备(HAL 层) */
   sdl_hal_init(320, 400);
+  // sdl_hal_init(320*3, 400*3);
 
   /* 初始化数据层(subject),必须在 UI 之前 */
   data_center_init();

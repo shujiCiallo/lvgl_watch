@@ -27,5 +27,5 @@ static void app_styles_init(void)
 static void info_style_init(void)
 {
     lv_style_init(&info_style);
-    lv_style_set_text_font(&info_style, &lv_font_montserrat_36);
+    lv_style_set_text_font(&info_style, &lv_font_montserrat_16);
 }

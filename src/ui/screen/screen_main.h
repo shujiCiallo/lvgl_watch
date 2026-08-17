@@ -11,4 +11,7 @@ typedef struct {
 /* 创建主屏幕:状态写入 self,控件挂在 parent 下 */
 void screen_main_create(screen_main_t *self, lv_obj_t *parent);
 
+/* 整体旋转罗盘环,angle_deg 为顺时针角度(0.1° 精度) */
+void compass_rotate(int angle_deg);
+
 #endif

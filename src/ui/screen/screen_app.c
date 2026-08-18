@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <string.h>
 #include "lvgl.h"
 #include "screen_app.h"
 #include "style/app_styles.h"
@@ -6,6 +8,7 @@
 
 /* 应用列表构建函数,只在模块内部使用 */
 static void applist_create(lv_obj_t *parent);
+static void power_btn_click_cb(lv_event_t *e);
 
 /* 创建应用列表屏幕:纵向排列的应用按钮网格 */
 void screen_app_create(screen_app_t *self, lv_obj_t *parent)
@@ -20,6 +23,13 @@ void screen_app_create(screen_app_t *self, lv_obj_t *parent)
 }
 
 static lv_style_t applist_style;   /* 应用按钮文本样式,模块级单例 */
+
+/* 点击 POWER:关闭模拟器 */
+static void power_btn_click_cb(lv_event_t *e)
+{
+    (void)e;
+    exit(0);
+}
 
 /* 应用列表:用 Button_t 配置数组批量创建 10 个应用按钮 */
 static void applist_create(lv_obj_t *parent)
@@ -51,5 +61,10 @@ static void applist_create(lv_obj_t *parent)
         lv_obj_set_size(applist[i].btn, lv_pct(100), LV_SIZE_CONTENT);
 
         lv_label_set_text(applist[i].label, applist[i].text);
+
+        /* 点击 POWER 按钮关闭程序 */
+        if (strstr(applist[i].text, "POWER") != NULL) {
+            lv_obj_add_event_cb(applist[i].btn, power_btn_click_cb, LV_EVENT_CLICKED, NULL);
+        }
     }
 }

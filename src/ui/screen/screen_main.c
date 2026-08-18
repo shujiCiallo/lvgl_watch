@@ -16,6 +16,9 @@ static void compass_ring_create(lv_obj_t *parent);
 static void calorie_panel_create(lv_obj_t *parent);
 static void info_panel_create(lv_obj_t *parent);
 
+/* 让罗盘所有子孙事件冒泡到 compass,点击任意位置都能命中其回调 */
+static void compass_event_bubble_all(lv_obj_t *obj);
+
 /* 罗盘环:4 段弧 + 4 个方向标签,挂在透明旋转容器上整体旋转 */
 #define COMPASS_ARC_WIDTH    4
 #define COMPASS_LABEL_OFFSET 4
@@ -34,6 +37,9 @@ static const char *bat_symbol_get(uint8_t bat);
 
 /* 电量图标观察者回调 */
 static void bat_icon_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
+
+/* 磁航向观察者回调 */
+static void compass_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
 
 /* 创建主屏幕(表盘):背景样式 + 时间/音乐/信息 三个面板 */
 void screen_main_create(screen_main_t *self, lv_obj_t *parent)
@@ -160,6 +166,9 @@ static void info_panel_create(lv_obj_t *parent)
         lv_obj_set_style_pad_all(compass, 4, 0);
         lv_obj_set_flex_grow(compass, 1);
         lv_obj_set_height(compass, lv_pct(100));
+        /* 点击进入指南针详情页:与 sport 详情页打开逻辑一致 */
+        lv_obj_add_event_cb(compass, compass_btn_click_cb,
+            LV_EVENT_CLICKED, sport_card_inst());
         {
             /* 透明旋转容器:与 compass 同尺寸,环与标签都挂在其下整体旋转 */
             compass_rot = lv_obj_create(compass);
@@ -171,12 +180,20 @@ static void info_panel_create(lv_obj_t *parent)
             lv_obj_set_style_transform_pivot_x(compass_rot, lv_pct(50), 0);
             lv_obj_set_style_transform_pivot_y(compass_rot, lv_pct(50), 0);
 
-            lv_obj_t *compass_center_label = lv_label_create(compass_rot);
+            /* 中心航向数值挂在外层 compass 下,不随 compass_rot 旋转,始终正立 */
+            lv_obj_t *compass_center_label = lv_label_create(compass);
             lv_obj_center(compass_center_label);
             lv_obj_add_style(compass_center_label, &info_style, 0);
-            // lv_label_set_text(compass_center_label, LV_SYMBOL_GPS);
+            /* 中心航向数值由数据层 g_compass_subject 驱动 */
+            lv_label_bind_text(compass_center_label, &g_compass_subject, "%d°");
 
             compass_ring_create(compass_rot);
+
+            /* 磁航向更新时调用 compass_rotate 旋转罗盘 */
+            lv_subject_add_observer(&g_compass_subject, compass_obs_cb, NULL);
+
+            /* 子对象点击事件冒泡,确保整个罗盘区域可点击 */
+            compass_event_bubble_all(compass);
         }
 
         lv_obj_t *BAT = lv_obj_create(info_panel);
@@ -284,6 +301,23 @@ static void bat_icon_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
     lv_label_set_text(label, bat_symbol_get(lv_subject_get_int(sub)));
 }
 
+/* 磁航向观察者:数据更新时旋转罗盘 */
+static void compass_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
+{
+    compass_rotate((int)lv_subject_get_int(sub));
+}
+
+/* 让 obj 的所有子孙事件冒泡到父级:点击子对象(环/标签/旋转容器)也能命中 compass 回调 */
+static void compass_event_bubble_all(lv_obj_t *obj)
+{
+    uint32_t cnt = lv_obj_get_child_count(obj);
+    for (uint32_t i = 0; i < cnt; i++) {
+        lv_obj_t *child = lv_obj_get_child(obj, i);
+        lv_obj_add_flag(child, LV_OBJ_FLAG_EVENT_BUBBLE);
+        compass_event_bubble_all(child);
+    }
+}
+
 /* 把标签放到以容器中心为圆心、内径圆周上 */
 static void compass_label_pos_set(lv_obj_t *parent, lv_obj_t *label, float angle_deg)
 {
@@ -326,6 +360,7 @@ static void compass_ring_create(lv_obj_t *parent)
         lv_obj_remove_style(compass_arc[i], NULL, LV_PART_KNOB);
         lv_arc_set_max_value(compass_arc[i], 90);
         lv_arc_set_value(compass_arc[i], 90);
+        lv_obj_clear_flag(compass_arc[i], LV_OBJ_FLAG_CLICKABLE);
 
         /* 方向标签:极坐标放在弧内侧,随容器一起旋转 */
         compass_label[i] = lv_label_create(parent);
@@ -335,7 +370,8 @@ static void compass_ring_create(lv_obj_t *parent)
         /* N 用红色,其余方向(E/S/W)用蓝色 */
         lv_obj_set_style_text_color(compass_label[i],
             (i == 0) ? COLOR_ERROR : COLOR_PRIMARY, 0);
-        compass_label_angle[i] = i * 90;
+        /* 0° 在右侧,偏移 270° 使 N 位于正上方(12 点),顺时针 E/S/W */
+        compass_label_angle[i] = (i * 90 + 270) % 360;
         compass_label_pos_set(parent, compass_label[i], compass_label_angle[i]);
     }
 

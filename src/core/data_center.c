@@ -11,6 +11,7 @@ lv_subject_t g_date_subject;
 
 lv_subject_t g_bat_subject;
 lv_subject_t g_symbol_bat_subject;
+lv_subject_t g_compass_subject;
 
 lv_subject_t g_steps_subject;
 lv_subject_t g_calorie_subject;
@@ -49,6 +50,7 @@ static uint16_t get_calirie(void);
 static uint16_t get_duration(void);
 static uint8_t get_battery(void);
 static uint16_t get_HR(void);
+static uint16_t get_compass_heading(void);
 static void hr_sample(void);
 static void hr_rollover(void);
 
@@ -65,6 +67,7 @@ static void update_time_cb(lv_timer_t *timer) {
         lv_subject_set_int(&g_steps_subject, get_steps());
         lv_subject_set_int(&g_calorie_subject, get_calirie());
         lv_subject_set_int(&g_duration_subject, get_duration());
+        lv_subject_set_int(&g_compass_subject, get_compass_heading());
             hr_sample();
         break;
 
@@ -188,6 +191,7 @@ void data_center_init(void) {
     lv_subject_init_int(&g_steps_subject, 0);
     lv_subject_init_int(&g_calorie_subject, 0);
     lv_subject_init_int(&g_bat_subject, get_battery());
+    lv_subject_init_int(&g_compass_subject, get_compass_heading());
     lv_subject_init_int(&g_duration_subject, 0);
     lv_subject_init_int(&g_HR_value_subject, 0);
     lv_subject_init_int(&g_HR_high_subject, 0);
@@ -248,4 +252,13 @@ static uint16_t get_HR(void)
     static uint16_t hr = 60;
     hr = (uint16_t)(60 + (hr * 7 + 13) % 37);  /* 线性同余伪随机*/
     return hr;
+}
+
+/* 罗盘磁航向模拟读数:0-359° 顺时针缓慢旋转 */
+static uint16_t get_compass_heading(void)
+{
+    ///MCU 传感器预留接口
+    static uint16_t heading = 0;
+    heading = (uint16_t)((heading + 3) % 360);
+    return heading;
 }

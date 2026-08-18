@@ -11,6 +11,7 @@ extern lv_subject_t g_date_subject;
 
 extern lv_subject_t g_bat_subject;
 extern lv_subject_t g_symbol_bat_subject;
+extern lv_subject_t g_compass_subject;   /* 磁航向(度) 0-359 */
 
 extern lv_subject_t g_steps_subject;
 extern lv_subject_t g_calorie_subject;

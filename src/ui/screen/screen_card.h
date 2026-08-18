@@ -10,6 +10,7 @@ typedef struct {
     lv_observer_t *arc_obs[3]; /* 三个活动圆环的订阅句柄,便于统一移除 */
     lv_obj_t *main_scr;        /* 进入详情页前的活动屏幕,右滑返回时恢复 */
     lv_obj_t *sport_scr;       /* 运动详情页根对象 */
+    lv_obj_t *compass_scr;     /* 指南针详情页根对象 */
 } screen_card_t;
 
 /* 创建卡片屏幕:状态写入 self,控件挂在 parent 下 */

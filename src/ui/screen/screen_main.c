@@ -8,7 +8,6 @@
 #include "core/data_center.h"
 
 
-
 /* 各面板构建函数,只在模块内部使用 */
 static void time_panel_create(lv_obj_t *parent);
 static void BAT_arc_create(lv_obj_t *parent);
@@ -385,3 +384,4 @@ void compass_rotate(int angle_deg)
     if (compass_rot == NULL) return;
     lv_obj_set_style_transform_rotation(compass_rot, angle_deg * 10, 0); /* 0.1° 为单位 */
 }
+

@@ -3,6 +3,8 @@
 #include "event/event.h"
 #include "screen_manager.h"
 #include "core/data_center.h"
+#include "style/app_colors.h"
+#include "event/setting_page.h"
 
 /* 内部构建函数 */
 static void title_create(lv_obj_t *parent);
@@ -36,7 +38,7 @@ static void title_create(lv_obj_t *parent)
 {
     lv_style_init(&title_style);
     lv_style_set_bg_opa(&title_style, LV_OPA_COVER);
-    lv_style_set_text_font(&title_style, &lv_font_montserrat_36);
+    lv_style_set_text_font(&title_style, &lv_font_montserrat_34);
 
     lv_obj_t *bt_label = lv_label_create(parent);
     lv_label_set_text(bt_label, LV_SYMBOL_BLUETOOTH);
@@ -76,6 +78,8 @@ static void tools_create(lv_obj_t *parent)
 
     lv_style_init(&tools_style);
     lv_style_set_text_font(&tools_style, &lv_font_montserrat_48);
+    lv_style_set_text_color(&tools_style, lv_color_black());
+    // lv_style_set_bg_color(&tools_style, COLOR_BACKGROUND);
 
     size_t num = sizeof(tools_buf) / sizeof(tools_buf[0]);
     for (size_t i = 0; i < num; i++) {
@@ -86,10 +90,14 @@ static void tools_create(lv_obj_t *parent)
         lv_obj_center(tools_buf[i].label);
         lv_obj_add_style(tools_buf[i].label, &tools_style, 0);
         lv_label_set_text(tools_buf[i].label, tools_buf[i].text);
+        lv_obj_set_style_bg_color(tools_buf[i].btn, COLOR_SURFACE, 0);
         lv_obj_set_grid_cell(tools_buf[i].btn, LV_GRID_ALIGN_STRETCH,
                             col, 1, LV_GRID_ALIGN_STRETCH,
                             row + 1, 1);
     }
+    lv_obj_add_event_cb(tools_buf[2].btn, setting_btn_click_cb, 
+        LV_EVENT_CLICKED, NULL);
+
 }
 
 static void bat_observer_cb(lv_observer_t *obs,

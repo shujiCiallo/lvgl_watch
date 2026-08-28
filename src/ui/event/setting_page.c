@@ -1,4 +1,5 @@
 #include "setting_page.h"
+#include "style/app_colors.h"
 #include "lvgl.h"
 #include "screen/screen_manager.h"
 #include "screen/screen_main.h"
@@ -56,12 +57,13 @@ static void setting_page_create(lv_obj_t *parent)
     title_create(title);
 
     lv_obj_t *option = lv_obj_create(obj);
-    lv_obj_set_flex_grow(option, 10);
+    lv_obj_remove_style_all(option);
+    lv_obj_set_flex_grow(option, 12);
     lv_obj_set_width(option, lv_pct(100));
     lv_obj_set_flex_flow(option, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(option, LV_FLEX_ALIGN_START, 
         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-
+    
     options_create(option);
 
 }
@@ -112,10 +114,19 @@ static void options_create(lv_obj_t *parent)
     static lv_style_t options_style = {};
 
     lv_style_init(&options_style);
-    lv_style_set_text_font(&options_style, &lv_font_montserrat_36);
+    lv_style_set_text_font(&options_style, &lv_font_montserrat_30);
+    lv_style_set_text_align(&options_style, LV_TEXT_ALIGN_LEFT);
+    // lv_style_set_bg_opa(&options_style, LV_OPA_COVER);
 
     Button_t options[] = {
-       {.text = "option"} 
+       {.text = "Device"},
+       {.text = "Notifications"},
+       {.text = "WatchFaces"},
+       {.text = "Haptics"},
+       {.text = "AppManagement"},
+       {.text = "PowerSaving"},
+       {.text = "ActivitySetting"},
+       {.text = "Preferences"},
     };
 
 
@@ -123,12 +134,18 @@ static void options_create(lv_obj_t *parent)
     for (int i = 0; i < num; i++)
     {
         options[i].btn = lv_obj_create(obj);
-        lv_obj_add_style(options[i].btn, &options_style, 0);
         lv_obj_set_width(options[i].btn, lv_pct(100));
-        lv_obj_set_height(options[i].btn, lv_pct(30));
+        lv_obj_set_height(options[i].btn, lv_pct(25));
+        lv_obj_set_style_bg_color(options[i].btn, COLOR_SURFACE, 0);
+        lv_obj_set_style_margin_all(options[i].btn, 4, 0);
 
         options[i].label = lv_label_create(options[i].btn);
+        lv_obj_add_style(options[i].label, &options_style, 0);
+        lv_obj_set_size(options[i].label, lv_pct(100), LV_SIZE_CONTENT);
+        lv_obj_center(options[i].label);
+        // lv_obj_set_align(options[i].label, LV_ALIGN_LEFT_MID);
         lv_label_set_text(options[i].label, options[i].text);
+        lv_obj_set_style_bg_color(options[i].label, lv_palette_main(LV_PALETTE_BLUE), 0);
     }
     
     

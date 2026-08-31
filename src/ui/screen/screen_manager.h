@@ -5,6 +5,7 @@
 #include "screen/screen_card.h"
 
 extern lv_obj_t *g_tileview;
+extern int g_tile_index;
 
 /* 通用按钮控件组 */
 typedef struct Button{

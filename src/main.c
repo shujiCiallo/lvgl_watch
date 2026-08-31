@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     usleep(sleep_time_ms * 1000);
 #endif
   }
-
+  lv_deinit();
   return 0;
 }
 

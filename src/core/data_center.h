@@ -3,8 +3,6 @@
 
 #include "lvgl.h"
 
-/* 卡路里满量程:UI 的 slider/arc 最大值与数据层保持一致 */
-#define CALORIE_MAX 400
 
 extern lv_subject_t g_time_subject;
 extern lv_subject_t g_date_subject;

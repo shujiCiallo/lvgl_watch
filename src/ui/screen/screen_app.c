@@ -1,10 +1,12 @@
 #include <stdlib.h>
+#include "event/music.h"
 #include <string.h>
 #include "lvgl.h"
 #include "screen_app.h"
 #include "style/app_styles.h"
 #include "style/app_colors.h"
 #include "screen/screen_manager.h"
+#include "event/setting_page.h"
 
 /* 应用列表构建函数,只在模块内部使用 */
 static void applist_create(lv_obj_t *parent);
@@ -27,7 +29,7 @@ static lv_style_t applist_style;   /* 应用按钮文本样式,模块级单例 *
 static void power_btn_click_cb(lv_event_t *e)
 {
     (void)e;
-    exit(0);
+    lv_sdl_quit();
 }
 
 /* 应用列表:用 Button_t 配置数组批量创建 10 个应用按钮 */
@@ -55,7 +57,7 @@ static void applist_create(lv_obj_t *parent)
     // };
     Button_t applist[] = {
         {NULL, NULL, " VOLUME"},
-        {NULL, NULL, " VIDEO"},
+        {NULL, NULL, " MUSIC"},
         {NULL, NULL, " IMAGE"},
         {NULL, NULL, " CALL"},
         {NULL, NULL, " WIFI"},
@@ -79,6 +81,19 @@ static void applist_create(lv_obj_t *parent)
         LV_SYMBOL_POWER ,
     };
 
+    lv_event_cb_t app_cb[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        setting_btn_click_cb,
+        power_btn_click_cb       
+    };
+
     size_t num = sizeof(applist) / sizeof(applist[0]);
     for (size_t i = 0; i < num; i++)
     {
@@ -89,26 +104,29 @@ static void applist_create(lv_obj_t *parent)
 
         // applist[i].label = lv_label_create(applist[i].btn);
         applist[i].label = lv_obj_create(parent);
+        // lv_obj_remove_style_all(applist[i].label);
         lv_obj_set_flex_flow(applist[i].label, LV_FLEX_FLOW_ROW);
         lv_obj_set_flex_align(applist[i].label, LV_FLEX_ALIGN_START, 
             LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
-        lv_obj_set_size(applist[i].label, lv_pct(100), LV_SIZE_CONTENT);
-        // lv_obj_add_style(applist[i].label, &applist_style, 0);
+        lv_obj_set_size(applist[i].label, lv_pct(100), lv_pct(15));
+        lv_obj_set_style_bg_opa(applist[i].label, 0, 0);
+        lv_obj_set_style_border_width(applist[i].label, 0, 0);
+        lv_obj_remove_flag(applist[i].label, LV_OBJ_FLAG_SCROLLABLE);
+        lv_obj_add_flag(applist[i].label, LV_OBJ_FLAG_CHECKABLE);
 
         lv_obj_t *label_symbol = lv_label_create(applist[i].label);
         lv_label_set_text(label_symbol, app_text[i]);
         lv_obj_set_style_text_font(label_symbol, &lv_font_montserrat_36, 0);
-        lv_obj_set_size(label_symbol, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        lv_obj_set_size(label_symbol, lv_pct(20), LV_SIZE_CONTENT);
         
         lv_obj_t *label_text = lv_label_create(applist[i].label);
         lv_label_set_text(label_text, applist[i].text);
         lv_obj_set_style_text_font(label_text, &lv_font_montserrat_24, 0);
         lv_obj_set_size(label_text, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         
+        lv_obj_add_event_cb(applist[i].label, app_cb[i], 
+            LV_EVENT_CLICKED, NULL);
 
-        /* 点击 POWER 按钮关闭程序 */
-        if (strstr(applist[i].text, "POWER") != NULL) {
-            lv_obj_add_event_cb(applist[i].btn, power_btn_click_cb, LV_EVENT_CLICKED, NULL);
-        }
     }
 }
+

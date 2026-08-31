@@ -3,7 +3,11 @@
 
 #include "lvgl.h"
 
-/* 创建运动详情页 UI:控件挂在 parent 下,导航/手势由 ScreenNavigator 处理 */
-void sport_panel_create(lv_obj_t *parent);
+typedef struct {
+    lv_obj_t *root;
+}sport_panel_t;
+
+/* 创建运动详情页 UI:自建全屏 root,导航/手势由 ScreenNavigator 处理 */
+void sport_panel_create(sport_panel_t *self);
 
 #endif

@@ -13,13 +13,13 @@ static uint8_t value_index = 0;
 
 static void HR_title_create(lv_obj_t *parent);
 static void HR_table_create(lv_obj_t *parent);
-static void HR_btn_click_cb(lv_event_t *e);
 static void chart_draw_event_cb(lv_event_t *e);
 static void HR_observer_cb(lv_observer_t *obs, lv_subject_t *sub);
 static void HR_range_observer_cb(lv_observer_t *obs, lv_subject_t *sub);
 
 lv_obj_t *HRmonitor_card_create(screen_card_t *self, lv_obj_t *parent)
 {
+    (void)self;   /* 签名与其他卡片统一,当前无跨屏状态 */
     lv_obj_t *HR_card = lv_obj_create(parent);
     lv_obj_set_style_bg_color(HR_card, COLOR_SURFACE, 0);
     lv_obj_set_style_pad_all(HR_card, 5, 0);
@@ -28,7 +28,6 @@ lv_obj_t *HRmonitor_card_create(screen_card_t *self, lv_obj_t *parent)
         LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
     lv_coord_t scr_h = lv_disp_get_ver_res(NULL);
     lv_obj_set_size(HR_card, lv_pct(100), (scr_h * 45 / 100));
-    lv_obj_add_event_cb(HR_card, HR_btn_click_cb, LV_EVENT_CLICKED, self);
 
     HR_title_create(HR_card);
 
@@ -148,12 +147,6 @@ static void HR_table_create(lv_obj_t *parent)
 
     /* chart 创建时立即获取一次心率,画出第一根柱并初始化24h极值 */
     data_center_hr_sample();
-}
-
-/* 预留:点击卡片进入心率详情 */
-static void HR_btn_click_cb(lv_event_t *e)
-{
-    (void)e;
 }
 
 static void chart_draw_event_cb(lv_event_t *e)

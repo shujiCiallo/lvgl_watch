@@ -25,7 +25,7 @@ typedef enum {
     LOOP_ONE,
     SHUFFLE,
     BROWSE
-}palymode_t;
+}play_mode_t;
 
 typedef enum {
     INIT_OK,
@@ -45,7 +45,7 @@ typedef struct {
 
 typedef struct {
     music_state_t state;
-    palymode_t mode;
+    play_mode_t mode;
     uint16_t total_duration;
     uint16_t current_pos;
 }play_context_t;

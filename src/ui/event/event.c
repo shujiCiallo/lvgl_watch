@@ -8,26 +8,16 @@
 void sport_btn_click_cb(lv_event_t *e)
 {
     (void)e;
-    lv_obj_t *new = lv_obj_create(NULL);
-    lv_obj_set_style_pad_all(new, 8, 0);
-    lv_obj_set_size(new, lv_pct(100), lv_pct(100));
-    lv_obj_set_flex_flow(new, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_scrollable(new, false);
-
-    sport_panel_create(new);
-    navigator_push(new);
+    static sport_panel_t p;
+    sport_panel_create(&p);
+    navigator_push(p.root);
 }
 
 /* 点击打开指南针详情页 */
 void compass_btn_click_cb(lv_event_t *e)
 {
     (void)e;
-    lv_obj_t *new = lv_obj_create(NULL);
-    lv_obj_set_style_pad_all(new, 8, 0);
-    lv_obj_set_size(new, lv_pct(100), lv_pct(100));
-    lv_obj_set_flex_flow(new, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_scrollable(new, false);
-
-    compass_panel_create(new);
-    navigator_push(new);
+    static compass_panel_t p;
+    compass_panel_create(&p);
+    navigator_push(p.root);
 }

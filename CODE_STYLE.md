@@ -32,8 +32,9 @@ src/
 ## 2. 导航与页面生命周期
 
 - 详情页一律走 ScreenNavigator：
-  - 进入：点击回调里 `lv_obj_create(NULL)` 创建页面 → 组装内容 → `navigator_push(page)`。
+  - 进入：点击回调里调用页面模块的 `xxx_create(&self)` → `navigator_push(self.root)`。
   - 返回：右滑手势由 navigator 统一注册，`navigator_pop()` 销毁页面对象并恢复上层。
+- 详情页模块**自建 root**：`xxx_panel_t` 持有 `root`（如 `sport_panel_t`/`compass_panel_t`），`xxx_create(self)` 内部 `lv_obj_create(NULL)` 并配置尺寸/布局/滚动，组件状态也收进 struct；调用方不组装内容。
 - **禁止**：
   - 手动 `lv_scr_load()` 切详情页（绕过导航）。
   - 缓存/复用页面对象。详情页零状态（数据全部由 subject 驱动），进入创建、返回销毁，避免对象只增不减的内存泄漏。

@@ -1,18 +1,16 @@
 #include "compass_panel.h"
 #include "core/data_center.h"
 #include "style/app_colors.h"
-#include "widgets/compass_widget.h"
 
 /* 指南针详情页 UI */
-void compass_panel_create(lv_obj_t *parent)
+void compass_panel_create(compass_panel_t *self)
 {
-    lv_obj_t *obj = parent;
+    self->root = lv_obj_create(NULL);
+    lv_obj_remove_style_all(self->root);
+    lv_obj_set_size(self->root, lv_pct(100), lv_pct(100));
+    lv_obj_set_style_pad_all(self->root, 8, 0);
 
-    lv_obj_remove_style_all(obj);
-    lv_obj_set_size(obj, lv_pct(100), lv_pct(100));
-    lv_obj_set_style_pad_all(obj, 8, 0);
-
-    lv_obj_t *label = lv_label_create(obj);
+    lv_obj_t *label = lv_label_create(self->root);
     lv_obj_set_style_text_align(label, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_set_style_text_font(label, &lv_font_montserrat_26, 0);
     lv_obj_center(label);
@@ -20,7 +18,6 @@ void compass_panel_create(lv_obj_t *parent)
     lv_label_bind_text(label, &g_compass_subject, "%d°");
 
     /* 罗盘组件:2 段弧 + S/N,随航向整体旋转 */
-    static compass_widget_t compass_w;
     static const char *compass_dir[] = {"S", "N"};
     static const float compass_angle[] = {180, 0};
     compass_cfg_t cfg = {
@@ -37,5 +34,5 @@ void compass_panel_create(lv_obj_t *parent)
         .radius_inset = 24,
         .label_facing_center = true,
     };
-    compass_widget_create(&compass_w, obj, &cfg);
+    compass_widget_create(&self->compass_w, self->root, &cfg);
 }

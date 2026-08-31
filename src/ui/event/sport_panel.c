@@ -5,9 +5,15 @@
 #include "core/data_center.h"
 
 /* 运动详情页:活动圆环 + 数值标签,数据均由 data_center 的 subject 驱动 */
-void sport_panel_create(lv_obj_t *parent)
+void sport_panel_create(sport_panel_t *self)
 {
-    lv_obj_t *meter = lv_obj_create(parent);
+    self->root = lv_obj_create(NULL);
+    lv_obj_set_style_pad_all(self->root, 8, 0);
+    lv_obj_set_size(self->root, lv_pct(100), lv_pct(100));
+    lv_obj_set_flex_flow(self->root, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_scrollable(self->root, false);
+
+    lv_obj_t *meter = lv_obj_create(self->root);
     lv_obj_remove_style_all(meter);
     lv_obj_set_size(meter, lv_pct(100), lv_pct(45));
     lv_obj_set_scrollable(meter, false);
@@ -18,7 +24,7 @@ void sport_panel_create(lv_obj_t *parent)
     };
     activity_rings_create(meter, rings, 3);
 
-    lv_obj_t *info = lv_obj_create(parent);
+    lv_obj_t *info = lv_obj_create(self->root);
     lv_obj_remove_style_all(info);
     lv_obj_set_size(info, lv_pct(100), lv_pct(50));
     lv_obj_set_flex_flow(info, LV_FLEX_FLOW_COLUMN);

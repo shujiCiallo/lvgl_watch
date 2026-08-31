@@ -40,21 +40,7 @@ static void applist_create(lv_obj_t *parent)
     lv_style_set_bg_color(&applist_style, COLOR_BACKGROUND);
     lv_style_set_text_color(&applist_style, lv_color_black());
     lv_style_set_margin_all(&applist_style, 8);
-    // lv_style_set_bg_opa(&applist_style, 0);
-    // lv_style_set_border_width(&applist_style, 0);
 
-    // Button_t applist[] = {
-    //     {NULL, NULL, LV_SYMBOL_VOLUME_MID " VOLUME"},
-    //     {NULL, NULL, LV_SYMBOL_VIDEO " VIDEO"},
-    //     {NULL, NULL, LV_SYMBOL_IMAGE " IMAGE"},
-    //     {NULL, NULL, LV_SYMBOL_CALL " CALL"},
-    //     {NULL, NULL, LV_SYMBOL_WIFI " WIFI"},
-    //     {NULL, NULL, LV_SYMBOL_BLUETOOTH " BLUETOOTH"},
-    //     {NULL, NULL, LV_SYMBOL_DIRECTORY " DIRECTORY"},
-    //     {NULL, NULL, LV_SYMBOL_ENVELOPE " ENVELOPE"},
-    //     {NULL, NULL, LV_SYMBOL_SETTINGS " SETTINGS"},
-    //     {NULL, NULL, LV_SYMBOL_POWER " POWER"},
-    // };
     Button_t applist[] = {
         {NULL, NULL, " VOLUME"},
         {NULL, NULL, " MUSIC"},
@@ -97,14 +83,7 @@ static void applist_create(lv_obj_t *parent)
     size_t num = sizeof(applist) / sizeof(applist[0]);
     for (size_t i = 0; i < num; i++)
     {
-        // applist[i].btn = lv_obj_create(parent);
-        // // lv_obj_remove_style_all(applist[i].btn);
-        // lv_obj_add_style(applist[i].btn, &applist_style, 0);
-        // lv_obj_set_size(applist[i].btn, lv_pct(100), LV_SIZE_CONTENT);
-
-        // applist[i].label = lv_label_create(applist[i].btn);
         applist[i].label = lv_obj_create(parent);
-        // lv_obj_remove_style_all(applist[i].label);
         lv_obj_set_flex_flow(applist[i].label, LV_FLEX_FLOW_ROW);
         lv_obj_set_flex_align(applist[i].label, LV_FLEX_ALIGN_START, 
             LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);

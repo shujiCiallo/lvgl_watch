@@ -9,7 +9,7 @@
 #define HR_AXIS_PADDING 5   /* Y 轴范围在24h极值上下的边距,避免柱子贴边 */
 static lv_coord_t low_values[POINT_NUM]  = {};
 static lv_coord_t high_values[POINT_NUM] = {};
-static Uint8 value_index = 0;
+static uint8_t value_index = 0;
 
 static void HR_title_create(lv_obj_t *parent);
 static void HR_table_create(lv_obj_t *parent);

@@ -11,6 +11,7 @@ static void title_create(lv_obj_t *parent);
 static void tools_create(lv_obj_t *parent);
 
 static void bat_observer_cb(lv_observer_t *obs,lv_subject_t *sub);
+static void bat_label_update(lv_obj_t *label);
 
 /* 创建工具屏幕:grid 布局的标题栏 + 工具按钮区 */
 void screen_tools_create(screen_tools_t *self, lv_obj_t *parent)
@@ -50,7 +51,7 @@ static void title_create(lv_obj_t *parent)
     lv_obj_add_style(bat_label, &title_style, 0);
     lv_obj_set_grid_cell(bat_label, LV_GRID_ALIGN_START,
         0, 1, LV_GRID_ALIGN_CENTER, 0, 1);
-    lv_label_set_text(bat_label, "100" LV_SYMBOL_BATTERY_FULL);
+    bat_label_update(bat_label);   /* 创建时用当前电量初始化,不再写死 */
     lv_subject_add_observer(&g_bat_subject, bat_observer_cb,
         bat_label);
 
@@ -100,13 +101,21 @@ static void tools_create(lv_obj_t *parent)
 
 }
 
-static void bat_observer_cb(lv_observer_t *obs,
-    lv_subject_t *sub)
+/* 标题栏电量文本:数值 + 图标分级,创建初始化与数据更新共用 */
+static void bat_label_update(lv_obj_t *label)
 {
     uint8_t bat = lv_subject_get_int(&g_bat_subject);
     char bat_buf[24];
     lv_snprintf(bat_buf, sizeof(bat_buf), "%d%s",
         bat, bat_symbol_level(bat));
-    lv_obj_t *label = lv_observer_get_user_data(obs);
     lv_label_set_text(label, bat_buf);
+}
+
+static void bat_observer_cb(lv_observer_t *obs,
+    lv_subject_t *sub)
+{
+    (void)obs;
+    (void)sub;
+    lv_obj_t *label = lv_observer_get_user_data(obs);
+    bat_label_update(label);
 }

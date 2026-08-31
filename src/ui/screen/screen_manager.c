@@ -5,8 +5,7 @@
 #include "screen/screen_card.h"
 #include "event/event.h"
 
-lv_obj_t *g_tileview;
-int g_tile_index = 2;   /* 预留:当前所在 tile 的索引,暂未使用 */
+static lv_obj_t *g_tileview;   /* 主 tileview,仅本模块使用 */
 
 /* 各屏幕运行时状态(模块内单例),传给对应屏的 create 接口 */
 static screen_main_t     s_main;

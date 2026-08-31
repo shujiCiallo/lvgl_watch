@@ -5,9 +5,6 @@
 #include "screen/screen_card.h"
 #include "widgets/ui_widgets.h"
 
-extern lv_obj_t *g_tileview;
-extern int g_tile_index;
-
 /* 创建主 tileview(表盘主界面) */
 void screen_tileview_create(lv_obj_t *parent);
 

@@ -48,12 +48,12 @@ static uint8_t hr24_pos = 0;   /* 下一个写入位置 */
 static uint16_t get_steps(void);
 static uint16_t get_calirie(void);
 static uint16_t get_duration(void);
-/* 电量图标分级:100 满格 / 64-99 三格 / 34-63 两格 / 0-33 一格 */
+/* 电量图标分级:满格 / 三格(64-99) / 两格(34-63) / 一格(0-33) */
 const char *bat_symbol_level(uint8_t bat)
 {
-    if (bat >= 100) return LV_SYMBOL_BATTERY_FULL;
-    if (bat >= 64)  return LV_SYMBOL_BATTERY_3;
-    if (bat >= 34)  return LV_SYMBOL_BATTERY_2;
+    if (bat >= BAT_LEVEL_FULL)      return LV_SYMBOL_BATTERY_FULL;
+    if (bat > BAT_LEVEL_MID_MAX)    return LV_SYMBOL_BATTERY_3;
+    if (bat > BAT_LEVEL_LOW_MAX)    return LV_SYMBOL_BATTERY_2;
     return LV_SYMBOL_BATTERY_1;
 }
 

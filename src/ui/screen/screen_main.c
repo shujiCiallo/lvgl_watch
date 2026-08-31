@@ -215,10 +215,10 @@ typedef struct
     int16_t seg_min[3];   /* 每段弧对应的电量最小值 */
     int16_t seg_max[3];   /* 每段弧对应的电量最大值 */
 }bat_arc_t;
-/* 三段电量区间:低 / 中 / 高 */
+/* 三段电量区间:低 / 中 / 高,边界取自 data_center 电量分档 */
 static bat_arc_t bat_arc_ring = {
-    .seg_min = {0, 34, 64},
-    .seg_max = {33, 63, 100},
+    .seg_min = {0, BAT_LEVEL_LOW_MAX + 1, BAT_LEVEL_MID_MAX + 1},
+    .seg_max = {BAT_LEVEL_LOW_MAX, BAT_LEVEL_MID_MAX, BAT_LEVEL_FULL},
 };
 
 /* 按电量刷新三段弧环:每段 value = 电量在该区间的偏移 */

@@ -8,6 +8,11 @@
 #define STEPS_MAX      6000  /* 步数满量程 */
 #define DURATION_MAX   1200  /* 运动时长满量程 */
 
+/* 电量分档边界:图标分级(bat_symbol_level)与表盘三段弧共用,唯一出口 */
+#define BAT_LEVEL_LOW_MAX   33   /* 0-33   低电量 */
+#define BAT_LEVEL_MID_MAX   63   /* 34-63  中电量 */
+#define BAT_LEVEL_FULL      100  /* 64-100 高/满电量 */
+
 extern lv_subject_t g_time_subject;
 extern lv_subject_t g_date_subject;
 

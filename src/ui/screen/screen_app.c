@@ -111,8 +111,8 @@ static void applist_create(lv_obj_t *parent)
         lv_obj_set_size(applist[i].label, lv_pct(100), lv_pct(15));
         lv_obj_set_style_bg_opa(applist[i].label, 0, 0);
         lv_obj_set_style_border_width(applist[i].label, 0, 0);
-        lv_obj_remove_flag(applist[i].label, LV_OBJ_FLAG_SCROLLABLE);
-        lv_obj_add_flag(applist[i].label, LV_OBJ_FLAG_CHECKABLE);
+        lv_obj_set_scrollable(applist[i].label, false);
+        lv_obj_set_checkable(applist[i].label, true);
 
         lv_obj_t *label_symbol = lv_label_create(applist[i].label);
         lv_label_set_text(label_symbol, app_text[i]);

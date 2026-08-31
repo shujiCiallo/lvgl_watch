@@ -1,5 +1,5 @@
-#ifndef CARD_H
-#define CARD_H
+#ifndef SPORT_CARD_H
+#define SPORT_CARD_H
 
 #include "screen/screen_card.h"
 

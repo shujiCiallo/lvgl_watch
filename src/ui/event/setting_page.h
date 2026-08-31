@@ -1,5 +1,5 @@
-#ifndef __SETTING_PAGE
-#define __SETTING_PAGE
+#ifndef SETTING_PAGE_H
+#define SETTING_PAGE_H
 
 #include "lvgl.h"
 

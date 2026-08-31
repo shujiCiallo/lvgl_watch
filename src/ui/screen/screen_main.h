@@ -1,5 +1,5 @@
-#ifndef __SCREEN_MAIN_H
-#define __SCREEN_MAIN_H
+#ifndef SCREEN_MAIN_H
+#define SCREEN_MAIN_H
 
 #include "lvgl.h"
 

@@ -91,7 +91,7 @@ static void calorie_panel_create(lv_obj_t *parent)
         LV_PART_MAIN);
     lv_obj_set_style_bg_color(slider, COLOR_ERROR, LV_PART_INDICATOR);
     /* 禁止鼠标滑动:slider 仅作进度展示 */
-    lv_obj_clear_flag(slider, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_set_clickable(slider, false);
     /* 满量程与数据层保持一致,数值与卡路里实时同步 */
     lv_slider_set_range(slider, 0, CALORIE_MAX);
     lv_subject_add_observer_obj(&g_calorie_subject, calorie_slider_obs_cb,

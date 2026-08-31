@@ -32,7 +32,7 @@ void navigator_push(lv_obj_t *page)
     lv_obj_t *cur = lv_scr_act();
     s_nav.stack[s_nav.depth++] = cur;
 
-    lv_obj_add_flag(cur, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_set_hidden(cur, true);
     lv_scr_load(page);
 
     lv_obj_add_event_cb(page, nav_gesture_cb, LV_EVENT_GESTURE, NULL);
@@ -48,6 +48,6 @@ void navigator_pop(void)
     lv_obj_t *prev = s_nav.stack[--s_nav.depth];
 
     lv_obj_delete(page);
-    lv_obj_remove_flag(prev, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_set_hidden(prev, false);
     lv_scr_load(prev);
 }

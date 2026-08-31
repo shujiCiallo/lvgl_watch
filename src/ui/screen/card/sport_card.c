@@ -35,9 +35,9 @@ lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent)
         LV_EVENT_CLICKED, self);
     {
         lv_obj_t *meter = lv_btn_create(sport_card);
-        lv_obj_clear_flag(meter, LV_OBJ_FLAG_SCROLLABLE);
+        lv_obj_set_scrollable(meter, false);
         lv_obj_remove_style_all(meter);
-        lv_obj_add_flag(meter, LV_OBJ_FLAG_EVENT_BUBBLE);
+        lv_obj_set_event_bubble(meter, true);
         lv_obj_set_flex_grow(meter, 1);
         activity_ring_cfg_t cfgs[] = {
             {NULL, 60, 10, CALORIE_MAX, COLOR_ERROR, &g_calorie_subject},
@@ -48,7 +48,7 @@ lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent)
 
         lv_obj_t *info = lv_obj_create(sport_card);
         lv_obj_remove_style_all(info);
-        lv_obj_add_flag(info, LV_OBJ_FLAG_EVENT_BUBBLE);
+        lv_obj_set_event_bubble(info, true);
         lv_obj_set_flex_grow(info, 1);
         lv_obj_set_width(info, lv_pct(100));
         lv_obj_set_flex_flow(info, LV_FLEX_FLOW_ROW);

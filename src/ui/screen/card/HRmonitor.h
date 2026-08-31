@@ -1,5 +1,5 @@
-#ifndef __HR_MONITOR_H
-#define __HR_MONITOR_H
+#ifndef HR_MONITOR_H
+#define HR_MONITOR_H
 
 #include "lvgl.h"
 #include "screen/screen_card.h"

@@ -3,8 +3,8 @@
  *
  */
 
-#ifndef LV_VSCODE_HAL_H
-#define LV_VSCODE_HAL_H
+#ifndef HAL_H
+#define HAL_H
 
 #include "../../lvgl/lvgl.h"
 #ifdef __cplusplus
@@ -41,4 +41,4 @@ lv_display_t * sdl_hal_init(int32_t w, int32_t h);
 } /*extern "C"*/
 #endif
 
-#endif /*LV_VSCODE_HAL_H*/
+#endif /*HAL_H*/

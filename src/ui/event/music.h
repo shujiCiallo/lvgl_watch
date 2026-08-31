@@ -1,5 +1,5 @@
-#ifndef __MUSIC_H
-#define __MUSIC_H
+#ifndef MUSIC_H
+#define MUSIC_H
 
 #include "lvgl.h"
 

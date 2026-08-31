@@ -6,7 +6,7 @@ void enable_bubble_all(lv_obj_t *obj)
     uint32_t cnt = lv_obj_get_child_count(obj);
     for (uint32_t i = 0; i < cnt; i++) {
         lv_obj_t *child = lv_obj_get_child(obj, i);
-        lv_obj_add_flag(child, LV_OBJ_FLAG_EVENT_BUBBLE);
+        lv_obj_set_event_bubble(child, true);
         lv_obj_set_gesture_bubble(child, true);
         enable_bubble_all(child);
     }

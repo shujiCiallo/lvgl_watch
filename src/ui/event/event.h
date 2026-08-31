@@ -1,5 +1,5 @@
-#ifndef __EVENT_H
-#define __EVENT_H
+#ifndef EVENT_H
+#define EVENT_H
 
 #include "lvgl.h"
 #include "screen/screen_card.h"

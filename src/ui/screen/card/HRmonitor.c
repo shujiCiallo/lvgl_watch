@@ -41,7 +41,7 @@ lv_obj_t *HRmonitor_card_create(screen_card_t *self, lv_obj_t *parent)
     lv_obj_set_flex_flow(HR_time, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(HR_time, LV_FLEX_ALIGN_SPACE_BETWEEN, 
         LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(HR_time, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scrollable(HR_time, false);
     
     lv_obj_t *_00 = lv_label_create(HR_time);
     lv_obj_set_width(_00, lv_pct(25));
@@ -63,7 +63,7 @@ static void HR_title_create(lv_obj_t *parent)
     lv_obj_set_flex_flow(HR_title, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(HR_title, LV_FLEX_ALIGN_START,
         LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_START);
-    lv_obj_remove_flag(HR_title, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scrollable(HR_title, false);
 
     lv_obj_t *HR_label = lv_label_create(HR_title);
     lv_obj_set_style_text_font(HR_label, &lv_font_montserrat_20, 0);

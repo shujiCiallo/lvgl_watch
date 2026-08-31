@@ -73,7 +73,7 @@ void compass_widget_create(compass_widget_t *self, lv_obj_t *parent,
         lv_obj_remove_style(arc, NULL, LV_PART_KNOB);
         lv_arc_set_range(arc, 0, seg);
         lv_arc_set_value(arc, seg);
-        lv_obj_clear_flag(arc, LV_OBJ_FLAG_CLICKABLE);
+        lv_obj_set_clickable(arc, false);
     }
 
     /* 方向标签:极坐标放在弧缺口处,可选旋转使顶部朝向圆心 */

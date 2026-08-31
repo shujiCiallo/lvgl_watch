@@ -13,8 +13,8 @@ lv_obj_t *activity_rings_create(lv_obj_t *parent,
     for (size_t i = 0; i < n; i++) {
         cfgs[i].arc = lv_arc_create(parent);
 
-        lv_obj_clear_flag(cfgs[i].arc, LV_OBJ_FLAG_CLICKABLE);
-        lv_obj_clear_flag(cfgs[i].arc, LV_OBJ_FLAG_CLICK_FOCUSABLE);
+        lv_obj_set_clickable(cfgs[i].arc, false);
+        lv_obj_set_click_focusable(cfgs[i].arc, false);
         lv_obj_set_event_bubble(cfgs[i].arc, true);
         lv_obj_set_size(cfgs[i].arc, cfgs[i].size, cfgs[i].size);
         lv_obj_align(cfgs[i].arc, LV_ALIGN_BOTTOM_MID, 0, cfgs[i].size / 2);

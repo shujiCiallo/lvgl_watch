@@ -1,5 +1,5 @@
-#ifndef __APP_COLORS_H
-#define __APP_COLORS_H
+#ifndef APP_COLORS_H
+#define APP_COLORS_H
 
 #include "lvgl/lvgl.h"
 

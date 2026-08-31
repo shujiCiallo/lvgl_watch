@@ -25,6 +25,9 @@ extern lv_subject_t g_HR_low_subject;
 extern lv_subject_t g_HR_max24_subject;   /* 过去24小时内心率最大值 */
 extern lv_subject_t g_HR_min24_subject;   /* 过去24小时内心率最小值 */
 
+/* 电量图标分级:UI 各处统一调用,规则唯一出口 */
+const char *bat_symbol_level(uint8_t bat);
+
 void data_center_init(void);
 void data_center_hr_sample(void);   /* 立即采样一次心率,chart 创建时调用 */
 

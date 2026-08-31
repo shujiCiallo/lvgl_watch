@@ -29,9 +29,6 @@ static float compass_label_angle[4];   /* 各标签所在极角 */
 /* 卡路里 slider 数据观察者回调 */
 static void calorie_slider_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
 
-/* 电量图标分级函数 */
-static const char *bat_symbol_get(uint8_t bat);
-
 /* 电量图标观察者回调 */
 static void bat_icon_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
 
@@ -213,7 +210,7 @@ static void info_panel_create(lv_obj_t *parent)
             lv_obj_add_style(BAT_icon_label, &info_style, 0);
             lv_obj_set_align(BAT_icon_label, LV_ALIGN_BOTTOM_MID);
             lv_label_set_text(BAT_icon_label,
-                bat_symbol_get(lv_subject_get_int(&g_bat_subject)));
+                bat_symbol_level(lv_subject_get_int(&g_bat_subject)));
             lv_subject_add_observer(&g_bat_subject, bat_icon_obs_cb,
                 BAT_icon_label);
         }
@@ -282,20 +279,11 @@ static void BAT_arc_create(lv_obj_t *parent)
     bat_arc_sync(lv_subject_get_int(&g_bat_subject));
 }
 
-/* 电量图标分级:与 core(screen_tools 标题栏)保持同一规则 */
-static const char *bat_symbol_get(uint8_t bat)
-{
-    if (bat >= 100) return LV_SYMBOL_BATTERY_FULL;   /* 100 满格 */
-    if (bat >= 64)  return LV_SYMBOL_BATTERY_3;      /* 64-99 三格 */
-    if (bat >= 34)  return LV_SYMBOL_BATTERY_2;      /* 34-63 两格 */
-    return LV_SYMBOL_BATTERY_1;                       /* 0-33 一格 */
-}
-
 /* 电量变化时刷新图标 */
 static void bat_icon_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
 {
     lv_obj_t *label = lv_observer_get_user_data(obs);
-    lv_label_set_text(label, bat_symbol_get(lv_subject_get_int(sub)));
+    lv_label_set_text(label, bat_symbol_level(lv_subject_get_int(sub)));
 }
 
 /* 磁航向观察者:数据更新时旋转罗盘 */

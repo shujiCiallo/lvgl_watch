@@ -3,16 +3,10 @@
 
 #include "lvgl.h"
 #include "screen/screen_card.h"
+#include "widgets/ui_widgets.h"
 
 extern lv_obj_t *g_tileview;
 extern int g_tile_index;
-
-/* 通用按钮控件组 */
-typedef struct Button{
-    lv_obj_t *btn;          /* 按钮对象 */
-    lv_obj_t *label;        /* 按钮上的文本标签 */
-    const char *text;       /* 标签显示的文本 */
-}Button_t;
 
 /* 创建主 tileview(表盘主界面) */
 void screen_tileview_create(lv_obj_t *parent);

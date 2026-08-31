@@ -104,20 +104,9 @@ static void bat_observer_cb(lv_observer_t *obs,
     lv_subject_t *sub)
 {
     uint8_t bat = lv_subject_get_int(&g_bat_subject);
-    const char *symbol_bat;
-    if (bat >= 100) {
-        symbol_bat =  LV_SYMBOL_BATTERY_FULL;
-    } else if (bat >= 64) {
-        symbol_bat =  LV_SYMBOL_BATTERY_3;
-    } else if (bat >= 34) {
-        symbol_bat =  LV_SYMBOL_BATTERY_2;
-    } else {
-        symbol_bat =  LV_SYMBOL_BATTERY_1;
-    }
-
     char bat_buf[24];
     lv_snprintf(bat_buf, sizeof(bat_buf), "%d%s",
-        bat, symbol_bat);
+        bat, bat_symbol_level(bat));
     lv_obj_t *label = lv_observer_get_user_data(obs);
     lv_label_set_text(label, bat_buf);
 }

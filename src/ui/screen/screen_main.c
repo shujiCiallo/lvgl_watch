@@ -1,39 +1,25 @@
 #include "screen_main.h"
 #include "lvgl/lvgl.h"
-#include <math.h>
 #include "event/event.h"
 #include "style/app_styles.h"
 #include "style/app_colors.h"
 #include "screen/screen_manager.h"
 #include "core/data_center.h"
+#include "widgets/compass_widget.h"
 #include "ui_utils.h"
 
 
 /* 各面板构建函数,只在模块内部使用 */
 static void time_panel_create(lv_obj_t *parent);
 static void BAT_arc_create(lv_obj_t *parent);
-static void compass_ring_create(lv_obj_t *parent);
 static void calorie_panel_create(lv_obj_t *parent);
 static void info_panel_create(lv_obj_t *parent);
-
-/* 罗盘环:4 段弧 + 4 个方向标签,挂在透明旋转容器上整体旋转 */
-#define COMPASS_ARC_WIDTH    4
-#define COMPASS_LABEL_OFFSET 4
-#define COMPASS_DEG2RAD      0.017453292519943295f
-
-static lv_obj_t *compass_rot;          /* 透明旋转容器 */
-static lv_obj_t *compass_arc[4];
-static lv_obj_t *compass_label[4];
-static float compass_label_angle[4];   /* 各标签所在极角 */
 
 /* 卡路里 slider 数据观察者回调 */
 static void calorie_slider_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
 
 /* 电量图标观察者回调 */
 static void bat_icon_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
-
-/* 磁航向观察者回调 */
-static void compass_obs_cb(lv_observer_t *obs, lv_subject_t *sub);
 
 /* 创建主屏幕(表盘):背景样式 + 时间/音乐/信息 三个面板 */
 void screen_main_create(screen_main_t *self, lv_obj_t *parent)
@@ -164,27 +150,32 @@ static void info_panel_create(lv_obj_t *parent)
         lv_obj_add_event_cb(compass, compass_btn_click_cb,
             LV_EVENT_CLICKED, sport_card_inst());
         {
-            /* 透明旋转容器:与 compass 同尺寸,环与标签都挂在其下整体旋转 */
-            compass_rot = lv_obj_create(compass);
-            lv_obj_remove_style_all(compass_rot);
-            lv_obj_set_size(compass_rot, lv_pct(100), lv_pct(100));
-            lv_obj_center(compass_rot);
-            lv_obj_set_scrollable(compass_rot, false);
-            /* 旋转枢轴=容器中心,compass_rotate 绕此旋转 */
-            lv_obj_set_style_transform_pivot_x(compass_rot, lv_pct(50), 0);
-            lv_obj_set_style_transform_pivot_y(compass_rot, lv_pct(50), 0);
-
-            /* 中心航向数值挂在外层 compass 下,不随 compass_rot 旋转,始终正立 */
+            /* 中心航向数值挂在 compass 下,不随罗盘旋转,始终正立 */
             lv_obj_t *compass_center_label = lv_label_create(compass);
             lv_obj_center(compass_center_label);
             lv_obj_add_style(compass_center_label, &info_style, 0);
             /* 中心航向数值由数据层 g_compass_subject 驱动 */
             lv_label_bind_text(compass_center_label, &g_compass_subject, "%d°");
 
-            compass_ring_create(compass_rot);
-
-            /* 磁航向更新时调用 compass_rotate 旋转罗盘 */
-            lv_subject_add_observer(&g_compass_subject, compass_obs_cb, NULL);
+            /* 罗盘组件:4 段弧 + N/E/S/W,随航向整体旋转 */
+            static compass_widget_t compass_w;
+            static const char *compass_dir[] = {"N", "E", "S", "W"};
+            static const float compass_angle[] = {270, 0, 90, 180};
+            compass_cfg_t cfg = {
+                .heading = &g_compass_subject,
+                .dir = compass_dir,
+                .dir_angle = compass_angle,
+                .n = 4,
+                .arc_width = 4,
+                .arc_gap = 32,
+                .dir_font = &lv_font_montserrat_12,
+                .north_color = COLOR_ERROR,
+                .dir_color = COLOR_PRIMARY,
+                .radius_pct = 100,
+                .radius_inset = 8,
+                .label_facing_center = false,
+            };
+            compass_widget_create(&compass_w, compass, &cfg);
 
             /* 子对象事件冒泡,确保整个罗盘区域可点击 */
             enable_bubble_all(compass);
@@ -286,77 +277,4 @@ static void bat_icon_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
     lv_label_set_text(label, bat_symbol_level(lv_subject_get_int(sub)));
 }
 
-/* 磁航向观察者:数据更新时旋转罗盘 */
-static void compass_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
-{
-    compass_rotate((int)lv_subject_get_int(sub));
-}
-
-/* 把标签放到以容器中心为圆心、内径圆周上 */
-static void compass_label_pos_set(lv_obj_t *parent, lv_obj_t *label, float angle_deg)
-{
-    lv_obj_update_layout(parent);
-    lv_obj_update_layout(label);   /* 先布局标签,拿真实宽高,避免默认 0 尺寸导致居中偏移 */
-
-    lv_coord_t cx = lv_obj_get_width(parent) / 2;
-    lv_coord_t cy = lv_obj_get_height(parent) / 2;
-    lv_coord_t r = LV_MIN(cx, cy) - COMPASS_ARC_WIDTH - COMPASS_LABEL_OFFSET;
-    float rad = angle_deg * COMPASS_DEG2RAD;
-    lv_coord_t x = cx + (lv_coord_t)(r * cosf(rad)) - lv_obj_get_width(label) / 2;
-    lv_coord_t y = cy + (lv_coord_t)(r * sinf(rad)) - lv_obj_get_height(label) / 2;
-    lv_obj_set_pos(label, x, y);
-}
-
-/* compass_rot 尺寸最终确定后重算标签位置,避免创建时尺寸为 0 导致偏移 */
-static void compass_repos_cb(lv_event_t *e)
-{
-    lv_obj_t *parent = lv_event_get_target(e);
-    for (size_t i = 0; i < 4; i++) {
-        if (compass_label[i] != NULL) {
-            compass_label_pos_set(parent, compass_label[i], compass_label_angle[i]);
-        }
-    }
-}
-
-static void compass_ring_create(lv_obj_t *parent)
-{
-    static const char *dir_text[4] = {"N", "E", "S", "W"};
-
-    for (size_t i = 0; i < 4; i++) {
-        /* 4 段弧,每段 90°,留 32° 缺口 */
-        compass_arc[i] = lv_arc_create(parent);
-        lv_obj_set_size(compass_arc[i], lv_pct(100), lv_pct(100));
-        lv_obj_center(compass_arc[i]);
-        lv_arc_set_bg_angles(compass_arc[i],
-            (i * 90) + 32/2, ((i + 1) * 90) - 32/2);
-        lv_obj_set_style_arc_width(compass_arc[i], COMPASS_ARC_WIDTH, LV_PART_INDICATOR);
-        lv_obj_set_style_arc_width(compass_arc[i], COMPASS_ARC_WIDTH, LV_PART_MAIN);
-        lv_obj_remove_style(compass_arc[i], NULL, LV_PART_KNOB);
-        lv_arc_set_max_value(compass_arc[i], 90);
-        lv_arc_set_value(compass_arc[i], 90);
-        lv_obj_clear_flag(compass_arc[i], LV_OBJ_FLAG_CLICKABLE);
-
-        /* 方向标签:极坐标放在弧内侧,随容器一起旋转 */
-        compass_label[i] = lv_label_create(parent);
-        lv_label_set_text(compass_label[i], dir_text[i]);
-        lv_obj_set_style_text_align(compass_label[i], LV_TEXT_ALIGN_CENTER, 0);
-        lv_obj_set_style_text_font(compass_label[i], &lv_font_montserrat_12, 0);
-        /* N 用红色,其余方向(E/S/W)用蓝色 */
-        lv_obj_set_style_text_color(compass_label[i],
-            (i == 0) ? COLOR_ERROR : COLOR_PRIMARY, 0);
-        /* 0° 在右侧,偏移 270° 使 N 位于正上方(12 点),顺时针 E/S/W */
-        compass_label_angle[i] = (i * 90 + 270) % 360;
-        compass_label_pos_set(parent, compass_label[i], compass_label_angle[i]);
-    }
-
-    /* 布局完成后尺寸才最终确定,尺寸变化时重算标签位置 */
-    lv_obj_add_event_cb(parent, compass_repos_cb, LV_EVENT_SIZE_CHANGED, NULL);
-}
-
-/* 整体旋转罗盘,angle_deg 为顺时针角度,数据层可按磁航向驱动 */
-void compass_rotate(int angle_deg)
-{
-    if (compass_rot == NULL) return;
-    lv_obj_set_style_transform_rotation(compass_rot, angle_deg * 10, 0); /* 0.1° 为单位 */
-}
 

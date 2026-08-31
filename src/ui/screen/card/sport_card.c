@@ -33,7 +33,7 @@ static lv_subject_t *data[] = {
     &g_duration_subject};
 
 /* 三个数值标签的满量程值,顺序与 data[] 对应 */
-static const int32_t sport_maxs[] = {CALORIE_MAX, 6000, 1200};
+static const int32_t sport_maxs[] = {CALORIE_MAX, STEPS_MAX, DURATION_MAX};
 static label_max_t sport_max[3];
 
 static lv_style_t sport_label_style;
@@ -68,8 +68,8 @@ lv_obj_t *sport_card_create(screen_card_t *self, lv_obj_t *parent)
         lv_obj_set_flex_grow(meter, 1);
         artivity_rings_t configs[] = {
             {NULL, 60, 10, CALORIE_MAX, COLOR_ERROR},
-            {NULL, 90, 10, 6000, COLOR_PRIMARY_DARK},
-            {NULL, 120, 10, 1200, COLOR_SECONDARY}
+            {NULL, 90, 10, STEPS_MAX, COLOR_PRIMARY_DARK},
+            {NULL, 120, 10, DURATION_MAX, COLOR_SECONDARY}
         };
         artivity_rings_create(self, meter, configs);
 
@@ -186,8 +186,8 @@ void sport_panel_creata(screen_card_t *self, lv_obj_t *parent)
     lv_obj_set_scrollable(meter, false);
     artivity_rings_t configs[] = {
         {NULL, 140, 27, CALORIE_MAX, COLOR_ERROR},
-        {NULL, 210, 27, 6000, COLOR_PRIMARY_DARK},
-        {NULL, 280, 27, 1200, COLOR_SECONDARY}
+        {NULL, 210, 27, STEPS_MAX, COLOR_PRIMARY_DARK},
+        {NULL, 280, 27, DURATION_MAX, COLOR_SECONDARY}
     };
     artivity_rings_create(self, meter, configs);
 

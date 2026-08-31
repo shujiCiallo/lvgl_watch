@@ -6,6 +6,7 @@
 #include "style/app_colors.h"
 #include "screen/screen_manager.h"
 #include "core/data_center.h"
+#include "ui_utils.h"
 
 
 /* 各面板构建函数,只在模块内部使用 */
@@ -14,9 +15,6 @@ static void BAT_arc_create(lv_obj_t *parent);
 static void compass_ring_create(lv_obj_t *parent);
 static void calorie_panel_create(lv_obj_t *parent);
 static void info_panel_create(lv_obj_t *parent);
-
-/* 让罗盘所有子孙事件冒泡到 compass,点击任意位置都能命中其回调 */
-static void compass_event_bubble_all(lv_obj_t *obj);
 
 /* 罗盘环:4 段弧 + 4 个方向标签,挂在透明旋转容器上整体旋转 */
 #define COMPASS_ARC_WIDTH    4
@@ -191,8 +189,8 @@ static void info_panel_create(lv_obj_t *parent)
             /* 磁航向更新时调用 compass_rotate 旋转罗盘 */
             lv_subject_add_observer(&g_compass_subject, compass_obs_cb, NULL);
 
-            /* 子对象点击事件冒泡,确保整个罗盘区域可点击 */
-            compass_event_bubble_all(compass);
+            /* 子对象事件冒泡,确保整个罗盘区域可点击 */
+            enable_bubble_all(compass);
         }
 
         lv_obj_t *BAT = lv_obj_create(info_panel);
@@ -304,17 +302,6 @@ static void bat_icon_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
 static void compass_obs_cb(lv_observer_t *obs, lv_subject_t *sub)
 {
     compass_rotate((int)lv_subject_get_int(sub));
-}
-
-/* 让 obj 的所有子孙事件冒泡到父级:点击子对象(环/标签/旋转容器)也能命中 compass 回调 */
-static void compass_event_bubble_all(lv_obj_t *obj)
-{
-    uint32_t cnt = lv_obj_get_child_count(obj);
-    for (uint32_t i = 0; i < cnt; i++) {
-        lv_obj_t *child = lv_obj_get_child(obj, i);
-        lv_obj_add_flag(child, LV_OBJ_FLAG_EVENT_BUBBLE);
-        compass_event_bubble_all(child);
-    }
 }
 
 /* 把标签放到以容器中心为圆心、内径圆周上 */

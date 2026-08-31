@@ -3,6 +3,10 @@
 
 #include "lvgl.h"
 
+/* 业务满量程常量:UI 的 slider/arc 最大值与数据层保持一致 */
+#define CALORIE_MAX    400   /* 卡路里满量程 */
+#define STEPS_MAX      6000  /* 步数满量程 */
+#define DURATION_MAX   1200  /* 运动时长满量程 */
 
 extern lv_subject_t g_time_subject;
 extern lv_subject_t g_date_subject;

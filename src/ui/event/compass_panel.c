@@ -1,6 +1,9 @@
 #include "compass_panel.h"
+#include "core/data_center.h"
+#include "style/app_colors.h"
+#include <math.h>
 
-static lv_obj_t *compass_ring[2] = {};
+static lv_obj_t *compass_ring[2];
 static lv_obj_t *compass_panel_rot;   /* 详情页罗盘旋转容器,供后续旋转 */
 
 /* 详情页方向标签定位(仿 screen_main 罗盘,极坐标) */
@@ -37,7 +40,7 @@ static void compass_dir_repos_cb(lv_event_t *e)
 }
 
 /* 指南针详情页 UI */
-static void compass_panel_create(lv_obj_t *parent)
+void compass_panel_create(lv_obj_t *parent)
 {
     lv_obj_t *obj = parent;
 
@@ -67,20 +70,19 @@ static void compass_panel_create(lv_obj_t *parent)
         lv_obj_set_width(compass_ring[i], lv_pct(90));
         lv_coord_t h = lv_obj_get_width(obj);
         lv_obj_set_height(compass_ring[i], h * 0.9);
-        lv_arc_set_bg_angles(compass_ring[i], 
+        lv_arc_set_bg_angles(compass_ring[i],
             (i * 180) + 32/2, ((i+1) * 180) - 32/2);
         lv_arc_set_angles(compass_ring[i],
-            (i * 180) + 32/2, 
+            (i * 180) + 32/2,
             ((i+1) * 180) - 32/2);
         lv_obj_remove_style(compass_ring[i], NULL, LV_PART_KNOB);
         lv_obj_clear_flag(compass_ring[i], LV_OBJ_FLAG_CLICKABLE);
         lv_arc_set_max_value(compass_ring[i], 180);
         lv_arc_set_value(compass_ring[i], 0);
-        lv_obj_set_style_arc_width(compass_ring[i], 
+        lv_obj_set_style_arc_width(compass_ring[i],
             24, LV_PART_INDICATOR);
         lv_obj_set_style_arc_width(compass_ring[i],
             24, LV_PART_MAIN);
-
     }
 
     /* 方向标签:左缺口 S(180°),右缺口 N(0°),文字旋转 90° 使顶部朝向圆心 */
@@ -105,6 +107,4 @@ static void compass_panel_create(lv_obj_t *parent)
     }
     /* 旋转容器尺寸确定后重算方向标签位置 */
     lv_obj_add_event_cb(compass_panel_rot, compass_dir_repos_cb, LV_EVENT_SIZE_CHANGED, NULL);
-
-   
 }

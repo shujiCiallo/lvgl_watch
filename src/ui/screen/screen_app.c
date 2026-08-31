@@ -124,8 +124,10 @@ static void applist_create(lv_obj_t *parent)
         lv_obj_set_style_text_font(label_text, &lv_font_montserrat_24, 0);
         lv_obj_set_size(label_text, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         
-        lv_obj_add_event_cb(applist[i].label, app_cb[i], 
-            LV_EVENT_CLICKED, NULL);
+        if (app_cb[i] != NULL) {
+            lv_obj_add_event_cb(applist[i].label, app_cb[i],
+                LV_EVENT_CLICKED, NULL);
+        }
 
     }
 }

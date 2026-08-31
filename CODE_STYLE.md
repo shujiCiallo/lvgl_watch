@@ -105,6 +105,4 @@ src/
 | 2 | 局部样式收进 style/ | screen_tools / screen_app / setting_page | 模块级 static 样式迁到 style/ 统一入口 |
 | 3 | UI 不驱动采样 | HRmonitor.c | `data_center_hr_sample()` 应在 UI 创建时调用 → 移到 data_center 定时驱动 |
 | 4 | 组件状态入 struct | HRmonitor.c | `low_values/high_values/value_index` 文件级 static，多实例会串数据 |
-| 5 | 死代码 music.c | ui/event/music.c | 未接入导航；含 `palymode_t` 拼写错误；文件系统扫描应移入 core |
-| 6 | 注释代码清理 | screen_app.c | 被注释掉的旧按钮创建块可删除 |
-| 7 | 空占位回调 | HRmonitor.c `HR_btn_click_cb` | 空实现，接功能或删除 |
+| 5 | 死代码 music.c | ui/event/music.c | 未接入导航；文件系统扫描应移入 core |

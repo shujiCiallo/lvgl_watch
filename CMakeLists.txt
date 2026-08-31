@@ -39,8 +39,6 @@ add_compile_definitions(
 # 5. 统一收集所有源码：基础文件 + 全局src下所有.c（src/ src/ui/自动包含）
 set(MAIN_SOURCES src/mouse_cursor_icon.c)
 file(GLOB_RECURSE ALL_SRC_C "${PROJECT_SOURCE_DIR}/src/*.c")
-# 半迁移残骸:功能已在 sport_card.c 实现,阶段3随组件抽取合并后重新纳入
-list(FILTER ALL_SRC_C EXCLUDE REGEX "/src/ui/event/sport_panel\\.c$")
 list(APPEND MAIN_SOURCES ${ALL_SRC_C})
 
 # 6. 基础链接库：lvgl内核 + SDL，不需要demo/example/svg可删减

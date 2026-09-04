@@ -25,6 +25,7 @@
 #include "hal/hal.h"
 #include "ui/ui.h"
 #include "core/data_center.h"
+#include "core/music_core.h"
 
 #if LV_USE_OS != LV_OS_FREERTOS
 
@@ -36,12 +37,16 @@ int main(int argc, char **argv)
   /* 初始化 LVGL 核心 */
   lv_init();
 
+  /* FreeType 字体引擎(中文/日文字库),须在 UI 创建字体前 */
+  (void)lv_freetype_init(512);
+
   /* 初始化 SDL 显示与输入设备(HAL 层) */
   sdl_hal_init(320, 400);
   // sdl_hal_init(320*3, 400*3);
 
   /* 初始化数据层(subject),必须在 UI 之前 */
   data_center_init();
+  music_core_init();
 
   /* 初始化 UI(全局样式 + 各屏幕) */
   ui_init();

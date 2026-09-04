@@ -30,4 +30,5 @@ void music_btn_click_cb(lv_event_t *e)
     static music_panel_t p;
     music_panel_create(&p);
     navigator_push(p.root);
+    music_panel_gesture_install(&p);
 }

@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "event/music.h"
 #include <string.h>
 #include "lvgl.h"
 #include "screen_app.h"
@@ -7,6 +6,8 @@
 #include "style/app_colors.h"
 #include "screen/screen_manager.h"
 #include "event/setting_page.h"
+#include "event/music.h"
+#include "event/event.h"
 
 /* 应用列表构建函数,只在模块内部使用 */
 static void applist_create(lv_obj_t *parent);
@@ -69,7 +70,7 @@ static void applist_create(lv_obj_t *parent)
 
     lv_event_cb_t app_cb[] = {
         NULL,
-        NULL,
+        music_btn_click_cb,
         NULL,
         NULL,
         NULL,

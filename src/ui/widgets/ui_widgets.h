@@ -8,6 +8,7 @@ typedef struct Button{
     lv_obj_t *btn;          /* 按钮对象 */
     lv_obj_t *label;        /* 按钮上的文本标签 */
     const char *text;       /* 标签显示的文本 */
+    lv_event_cb_t cb;
 }Button_t;
 
 #endif

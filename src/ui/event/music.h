@@ -50,4 +50,6 @@ typedef struct {
     uint16_t current_pos;
 }play_context_t;
 
+void music_panel_create(music_panel_t *self);
+
 #endif
